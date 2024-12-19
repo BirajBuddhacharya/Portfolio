@@ -27,7 +27,7 @@ function ContactForm() {
         "http://127.0.0.1:8000/api/connect/",
         formData
       );
-      alert("Data Saved");
+      alert("Data Saved" + response);
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.detail ||
