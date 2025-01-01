@@ -1,6 +1,6 @@
 #root {
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 0px 0px;
   text-align: center;
 }
 
@@ -38,4 +38,34 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Heading Type Writer effect */
+.typewrite {
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typewriter 2s steps(13) infinite alternate,
+    blink 800ms steps(13) infinite normal;
+  border-right: 5px solid white;
+  letter-spacing: 0.15em;
+}
+
+@keyframes typewriter {
+  from {
+    width: 0px;
+  }
+
+  to {
+    width: 210px;
+  }
+}
+
+@keyframes blink {
+  from {
+    border-color: white;
+  }
+
+  to {
+    border-color: transparent;
+  }
 }

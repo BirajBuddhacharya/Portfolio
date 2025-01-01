@@ -19,7 +19,7 @@ function Nav() {
             Projects
           </a>
           <a className="text-neutral hover:text-primary font-bold" href="#skills">
-            skills
+            Skills
           </a>
         </div>
         <a href={resume} target='blank' className="h-full flex items-center px-7 py-2 rounded-full border-2 border-primary hover:bg-primary transition delay-100 hover:cursor-pointer">
