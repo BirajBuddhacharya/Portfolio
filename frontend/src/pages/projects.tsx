@@ -4,7 +4,7 @@ function Projects() {
   return (
     <FadeInSection idTrack="projects">
       <section id="projects" className=" w-full">
-        <h1 className="text-3xl m-10">
+        <h1 className="text-3xl font-bold m-10">
           My <br />
           <span className="text-primary">Projects</span>
         </h1>

@@ -8,10 +8,12 @@ import ContactForm from "../components/contactForm";
 import FadeInSection from "../components/fadeIn"; // Make sure the path is correct
 
 function Footer() {
+  const github: string = "https://www.github.com/BirajBuddhacharya";
+  const linkedin: string = 'https://www.linkedin.com/in/biraj-buddhacharya'
   return (
     <FadeInSection idTrack="contact">
       <footer className="flex flex-col gap-5" id="contact">
-        <h1 className="text-3xl">
+        <h1 className="text-3xl font-bold">
           Lets <span className="text-primary">Connect!</span>
         </h1>
         <div className="w-full flex gap-10">
@@ -32,7 +34,7 @@ function Footer() {
               content="Tripureshwor, Kathmandu"
             />
             <div className="w-full flex justify-center p-2 gap-4 items-center my-2">
-              <a href="https://www.github.com/OtakuGod0" target="blank">
+              <a href={github} target="blank">
                 <img
                   src={githubLogo}
                   alt="github logo"
@@ -40,7 +42,7 @@ function Footer() {
                 />
               </a>
               <a
-                href="https://www.linkedin.com/in/biraj-buddhacharya"
+                href={linkedin}
                 target="blank"
               >
                 <img

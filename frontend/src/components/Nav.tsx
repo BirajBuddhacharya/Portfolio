@@ -9,20 +9,20 @@ function Nav() {
           <img src={mainPic} alt="Logo" />
         </div>
         <div className=" h-full flex gap-16 items-center">
-          <a className="text-neutral hover:text-primary font-bold" href="#home">
+          <a className="text-neutral hover:text-primary font-bold text-base" href="#home">
             Home
           </a>
-          <a className="text-neutral hover:text-primary font-bold" href="#about">
+          <a className="text-neutral hover:text-primary font-bold text-base" href="#about">
             About
           </a>
-          <a className="text-neutral hover:text-primary font-bold" href="#projects">
+          <a className="text-neutral hover:text-primary font-bold text-base" href="#projects">
             Projects
           </a>
-          <a className="text-neutral hover:text-primary font-bold" href="#skills">
+          <a className="text-neutral hover:text-primary font-bold text-base" href="#skills">
             Skills
           </a>
         </div>
-        <a href={resume} target='blank' className="h-full flex items-center px-7 py-2 rounded-full border-2 border-primary hover:bg-primary transition delay-100 hover:cursor-pointer">
+        <a href={resume} target='blank' className="h-full flex items-center px-7 py-2 rounded-full border-2 border-primary hover:bg-primary transition delay-100 hover:cursor-pointer text-base">
           <span className="text-neutral">Resume</span>
         </a>
       </nav>

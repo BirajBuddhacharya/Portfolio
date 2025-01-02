@@ -14,7 +14,7 @@ function Skills() {
         className="w-full flex items-center justify-center gap-12"
       >
         <div className="px-10">
-          <h3 className="text-2xl">
+          <h3 className="text-2xl font-bold">
             <span className="text-primary">10+ </span>
             <br /> Skills
           </h3>
