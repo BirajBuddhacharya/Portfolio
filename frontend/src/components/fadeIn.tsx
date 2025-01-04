@@ -12,13 +12,9 @@ const FadeInOnScroll: React.FC<FadeInSection> = ({ idTrack, children }) => {
     const scrollPosition = window.scrollY;
     const elementPosition = document.getElementById(idTrack)?.offsetTop || 0;
 
-    // debugging
-
-    if (scrollPosition + window.innerHeight > elementPosition) {
+    if (scrollPosition + window.innerHeight >= elementPosition) {
       setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
+    } 
   };
 
   useEffect(() => {
@@ -30,11 +26,7 @@ const FadeInOnScroll: React.FC<FadeInSection> = ({ idTrack, children }) => {
 
   return (
     <>
-      <div
-        className={`fade-in ${isVisible ? "visible" : ""}`}
-      >
-        {children}
-      </div>
+      <div className={`fade-in ${isVisible ? "visible" : ""}`}>{children}</div>
     </>
   );
 };
