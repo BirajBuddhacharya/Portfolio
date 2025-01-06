@@ -1,12 +1,12 @@
-import mainPic from "../assets/img/mainPic.png";
+import logo from "../assets/img/logo.png";
 import resume from '../assets/resume.pdf';
 
 function Nav() {
   return (
     <header>
       <nav className="relative w-full h-10 flex justify-between text-lg z-10">
-        <div className="h-full w-20">
-          <img src={mainPic} alt="Logo" />
+        <div className="h-full w-12">
+          <img src={logo} alt="Logo" />
         </div>
         <div className=" h-full flex gap-16 items-center">
           <a className="text-neutral hover:text-primary font-bold text-base" href="#home">

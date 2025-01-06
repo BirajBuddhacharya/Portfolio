@@ -1,4 +1,4 @@
-import aboutMeImg from "../assets/img/aboutMeImg.svg";
+import aboutMeImg from "../assets/img/brain.png";
 import FadeInSection from "../components/fadeIn"; // Make sure the path is correct
 
 function About() {
