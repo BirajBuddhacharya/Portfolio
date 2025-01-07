@@ -3,7 +3,7 @@ import mainPic from "../assets/img/mainPic.png";
 
 function Home() {
   return (
-    <section id="home" className="w-full h-full flex flex-col overflow-hid">
+    <section id="home" className="w-full h-full flex flex-col overflow-hidden">
       <div
         id="radientEffect"
         className="h-[50rem] w-[50rem] bg-primary rounded-full -translate-x-1/2 -translate-y-1/2  absolute top-[-20rem] left-1/2 blur-3xl opacity-90 z-10 shadow-[0_0_10px_10px_black]"

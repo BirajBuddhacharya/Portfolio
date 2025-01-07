@@ -19,7 +19,7 @@ function Skills() {
             <br /> Skills
           </h3>
         </div>
-        <div className="lg:col-span-2 flex gap-x-40 gap-y-20 flex-wrap justify-center items-center">
+        <div className="lg:col-span-2 flex gap-x-16 sm:gap-x-40 gap-y-20 flex-wrap justify-center items-center">
           <SkillsCard
             img={tensorflowLogo}
             content="Deep Learning with TensorFlow"
