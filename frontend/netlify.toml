@@ -1,4 +1,0 @@
-[[headers]]
-for = "/dist/*"
-[headers.values]
-Content-Type = "application/javascript"

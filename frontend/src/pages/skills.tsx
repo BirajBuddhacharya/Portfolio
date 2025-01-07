@@ -11,7 +11,7 @@ function Skills() {
     <FadeInSection idTrack="skills">
       <section
         id="skills"
-        className="w-full flex items-center justify-center gap-12"
+        className="w-full grid grid-cols-1 lg:grid-cols-3 items-center justify-center gap-12"
       >
         <div className="px-10">
           <h3 className="text-2xl font-bold">
@@ -19,7 +19,7 @@ function Skills() {
             <br /> Skills
           </h3>
         </div>
-        <div className="flex gap-x-40 gap-y-20 flex-wrap justify-center items-center">
+        <div className="lg:col-span-2 flex gap-x-40 gap-y-20 flex-wrap justify-center items-center">
           <SkillsCard
             img={tensorflowLogo}
             content="Deep Learning with TensorFlow"

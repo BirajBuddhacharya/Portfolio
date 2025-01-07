@@ -16,8 +16,8 @@ function Footer() {
         <h1 className="text-3xl font-bold">
           Lets <span className="text-primary">Connect!</span>
         </h1>
-        <div className="w-full flex gap-10">
-          <div className="px-20 flex flex-col justify-center">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div className="px-20 flex flex-col justify-center items-center lg:items-start">
             <FooterCard
               img={phone}
               heading="Call me"

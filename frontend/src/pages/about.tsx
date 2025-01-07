@@ -4,10 +4,10 @@ import FadeInSection from "../components/fadeIn"; // Make sure the path is corre
 function About() {
   return (
     <FadeInSection idTrack="about">
-      <section id="about" className="w-full flex relative">
+      <section id="about" className="w-full grid grid-cols-1 sm:grid-cols-2 sm:gap-0 gap-10 justify-items-center relative">
         <div className="bg-accent h-32 w-32 absolute top-[-6rem] left-0 rounded-full blur-3xl opacity-50"></div>
         <div className="bg-primary h-32 w-32 absolute right-0 bottom-[-6rem] rounded-full blur-3xl opacity-50"></div>
-        <div className="w-1/2 flex flex-col text-left px-20">
+        <div className="flex flex-col text-left lg:px-20 px-10">
           <div className="font-heading text-3xl font-semibold my-2">
             About <span className="text-primary">Me!</span>
           </div>
@@ -16,7 +16,7 @@ function About() {
             professionals.
           </p>
         </div>
-        <div className="w-1/2 px-28 ">
+        <div className="lg:px-28 px-4">
           <div className="relative">
             <div
               className="relative w-[15rem] h-[13rem] bg-cover bg-no-repeat z-10 shadow-[0_0_10px_10px_black]"
