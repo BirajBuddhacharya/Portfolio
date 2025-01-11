@@ -17,7 +17,7 @@ export default function SpinningCard({
         className="flex flex-col items-start text-black bg-primary w-full h-full absolute top-0 left-0 rounded-lg p-2"
         id={CardId}
       >
-        <div style={{backgroundImage: 'url({imgUrl})'}} className="h-3/4 w-full bg-cover bg-no-repeat bg-blue-400" />
+        <div style={{backgroundImage: `url(${imgUrl})`}} className="h-3/4 w-full bg-cover bg-no-repeat bg-blue-400" />
         <h2 className="text-xl">{heading}</h2>
         <p className="text-sm text-left">{discription}</p>
         <a
