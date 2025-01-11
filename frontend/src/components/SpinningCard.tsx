@@ -14,15 +14,15 @@ export default function SpinningCard({
   return (
     <>
       <div
-        className="flex flex-col justify-center items-center text-black bg-primary w-full h-full absolute top-0 left-0 rounded-lg"
+        className="flex flex-col items-start text-black bg-primary w-full h-full absolute top-0 left-0 rounded-lg p-2"
         id={CardId}
       >
-        <img src={imgUrl} className="h-20 w-20 bg-cover bg-no-repeat" />
+        <div style={{backgroundImage: 'url({imgUrl})'}} className="h-3/4 w-full bg-cover bg-no-repeat bg-blue-400" />
         <h2 className="text-xl">{heading}</h2>
-        <p className="text-sm">{discription}</p>
+        <p className="text-sm text-left">{discription}</p>
         <a
           target="_blank"
-          className="text-base py-2 px-5 bg-primary rounded-md text-white hover:text-white"
+          className="text-base py-2 px-5 bg-green-300 rounded-md text-white hover:text-white"
           href={buttonLink}
         >
           Learn More

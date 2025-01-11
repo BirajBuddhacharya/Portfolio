@@ -70,18 +70,18 @@ function Projects() {
               <div className="relative">
                 <SpinningCard
                   CardId="spinningCard1"
-                  heading="ABC BOOKS"
-                  discription="ecommerce website"
-                  buttonLink="https://www.github.com/BirajBuddhacharya/ABC-Books"
+                  heading="RiskVision"
+                  discription="A predictive model with 80%+ accuracy for assessing stroke and heart disease risk. Flask API backend, HTML/CSS front-end, 50% faster response time."
+                  buttonLink="https://www.github.com/BirajBuddhacharya/RiskVision"
                   imgUrl={dockerLogo}
                 />
               </div>
               <div className="relative">
                 <SpinningCard
                   CardId="spinningCard2"
-                  heading="ABC BOOKS"
-                  discription="ecommerce website"
-                  buttonLink="https://www.github.com/BirajBuddhacharya/ABC-Books"
+                  heading="SyncBeats"
+                  discription="CLI-based music sync using yt-dlp for YouTube playlists and local files. Features multiprocessing/multithreading. Reduced sync time by 40%."
+                  buttonLink="https://www.github.com/BirajBuddhacharya/SyncBeats"
                   imgUrl={dockerLogo}
                 />
               </div>
@@ -89,7 +89,7 @@ function Projects() {
                 <SpinningCard
                   CardId="spinningCard3"
                   heading="ABC BOOKS"
-                  discription="ecommerce website"
+                  discription="Full-stack platform with responsive design and streamlined checkout. Backend: Flask, Frontend: HTML, CSS, JavaScript. Improved user retention by 20%."
                   buttonLink="https://www.github.com/BirajBuddhacharya/ABC-Books"
                   imgUrl={dockerLogo}
                 />
