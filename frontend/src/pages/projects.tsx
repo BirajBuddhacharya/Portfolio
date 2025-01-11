@@ -64,7 +64,7 @@ function Projects() {
             <div className="absolute top-1/2 w-[61rem] h-[61rem] blur-3xl bg-primary opacity-90 shadow-[0_0_30px_60px_rgba(255,255,255)] rounded-full"></div>
             <div
               id="roundedDiv"
-              className="h-[67rem] w-[67rem] relative top-[40%] rounded-full grid grid-cols-3 grid-rows-3 gap-[6rem] ease delay-500"
+              className="h-[67rem] w-[67rem] relative top-[40%] rounded-full grid grid-cols-3 grid-rows-3 gap-[6rem] ease duration-500"
               style={{ transform: `rotate(${rotation}deg)` }}
             >
               <div className="relative">
