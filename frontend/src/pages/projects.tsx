@@ -3,40 +3,7 @@ import "../assets/css/spinningProjects.css";
 import rightArrow from "../assets/icons/rightArrow.png";
 import { useState } from "react";
 import dockerLogo from "../assets/icons/docker.svg";
-
-function SpinningCard({
-  imgUrl,
-  heading,
-  discription,
-  buttonLink,
-  CardId,
-}: {
-  imgUrl: string;
-  heading: string;
-  discription: string;
-  buttonLink: string;
-  CardId: string;
-}) {
-  return (
-    <>
-      <div
-        className="flex flex-col justify-center items-center spinningCard text-black"
-        id={CardId}
-      >
-        <img src={imgUrl} className="h-20 w-20 bg-cover bg-no-repeat" />
-        <h2 className="text-xl">{heading}</h2>
-        <p className="text-sm">{discription}</p>
-        <a
-          target="_blank"
-          className="text-base py-2 px-5 bg-primary rounded-md text-white hover:text-white"
-          href={buttonLink}
-        >
-          Learn More
-        </a>
-      </div>
-    </>
-  );
-}
+import SpinningCard from "../components/SpinningCard";
 
 function Projects() {
   const [rotation, setRotation] = useState(0);
@@ -92,15 +59,15 @@ function Projects() {
             )}
           </div>
         </div>
-        <div id="roundedDivWrapper">
+        <div className="w-full h-[30rem] flex justify-center overflow-y-clip">
           <div className="relative">
             <div className="absolute top-1/2 w-[61rem] h-[61rem] blur-3xl bg-primary opacity-90 shadow-[0_0_30px_60px_rgba(255,255,255)] rounded-full"></div>
             <div
               id="roundedDiv"
-              className=""
+              className="h-[67rem] w-[67rem] relative top-[40%] rounded-full grid grid-cols-3 grid-rows-3 gap-[6rem] ease delay-500"
               style={{ transform: `rotate(${rotation}deg)` }}
             >
-              <div>
+              <div className="relative">
                 <SpinningCard
                   CardId="spinningCard1"
                   heading="ABC BOOKS"
@@ -109,7 +76,7 @@ function Projects() {
                   imgUrl={dockerLogo}
                 />
               </div>
-              <div>
+              <div className="relative">
                 <SpinningCard
                   CardId="spinningCard2"
                   heading="ABC BOOKS"
@@ -118,7 +85,7 @@ function Projects() {
                   imgUrl={dockerLogo}
                 />
               </div>
-              <div>
+              <div className="relative">
                 <SpinningCard
                   CardId="spinningCard3"
                   heading="ABC BOOKS"
@@ -127,22 +94,22 @@ function Projects() {
                   imgUrl={dockerLogo}
                 />
               </div>
-              <div>
+              <div className="relative">
                 {/* <div id="spinningCard4" className="spinningCard"></div> */}
               </div>
-              <div>
+              <div className="relative">
                 {/* <div id="spinningCard5" className="spinningCard"></div> */}
               </div>
-              <div>
+              <div className="relative">
                 {/* <div id="spinningCard6" className="spinningCard"></div> */}
               </div>
-              <div>
+              <div className="relative">
                 {/* <div id="spinningCard7" className="spinningCard"></div> */}
               </div>
-              <div>
+              <div className="relative">
                 {/* <div id="spinningCard8" className="spinningCard"></div> */}
               </div>
-              <div>
+              <div className="relative">
                 {/* <div id="spinningCard9" className="spinningCard"></div> */}
               </div>
             </div>
