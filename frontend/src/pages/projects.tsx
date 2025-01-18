@@ -2,8 +2,10 @@ import FadeInSection from "../components/fadeIn"; // Make sure the path is corre
 import "../assets/css/spinningProjects.css";
 import rightArrow from "../assets/icons/rightArrow.png";
 import { useState } from "react";
-import dockerLogo from "../assets/icons/docker.svg";
 import SpinningCard from "../components/SpinningCard";
+import RiskVisionImg from "../assets/img/RiskVision.webp";
+import SyncBeatsImg from "../assets/img/SyncBeats.jpg";
+import ABCBooksImg from "../assets/img/ABCBooks.jpg";
 
 function Projects() {
   const [rotation, setRotation] = useState(0);
@@ -61,37 +63,37 @@ function Projects() {
         </div>
         <div className="w-full h-[30rem] flex justify-center overflow-y-clip">
           <div className="relative">
-            <div className="absolute top-1/2 w-[61rem] h-[61rem] blur-3xl bg-primary opacity-90 shadow-[0_0_30px_60px_rgba(255,255,255)] rounded-full"></div>
+            <div className="absolute top-1/2 w-[61rem] h-[61rem] blur-3xl bg-accent opacity-90 shadow-[0_0_30px_60px_rgba(255,255,255, 0.5)] rounded-full"></div>
             <div
               id="roundedDiv"
-              className="h-[67rem] w-[67rem] relative top-[40%] rounded-full grid grid-cols-3 grid-rows-3 gap-[6rem] ease duration-500"
+              className="h-[70rem] w-[70rem] relative top-[40%] rounded-full grid grid-cols-3 grid-rows-3 gap-[6rem] ease duration-500"
               style={{ transform: `rotate(${rotation}deg)` }}
             >
               <div className="relative">
                 <SpinningCard
                   CardId="spinningCard1"
                   heading="RiskVision"
-                  discription="A predictive model with 80%+ accuracy for assessing stroke and heart disease risk. Flask API backend, HTML/CSS front-end, 50% faster response time."
+                  discription="A predictive model with 80%+ accuracy for assessing stroke and heart disease risk."
                   buttonLink="https://www.github.com/BirajBuddhacharya/RiskVision"
-                  imgUrl={dockerLogo}
+                  imgUrl={RiskVisionImg}
                 />
               </div>
               <div className="relative">
                 <SpinningCard
                   CardId="spinningCard2"
                   heading="SyncBeats"
-                  discription="CLI-based music sync using yt-dlp for YouTube playlists and local files. Features multiprocessing/multithreading. Reduced sync time by 40%."
+                  discription="CLI-based music sync using yt-dlp for YouTube playlists and local files."
                   buttonLink="https://www.github.com/BirajBuddhacharya/SyncBeats"
-                  imgUrl={dockerLogo}
+                  imgUrl={SyncBeatsImg}
                 />
               </div>
               <div className="relative">
                 <SpinningCard
                   CardId="spinningCard3"
                   heading="ABC BOOKS"
-                  discription="Full-stack platform with responsive design and streamlined checkout. Backend: Flask, Frontend: HTML, CSS, JavaScript. Improved user retention by 20%."
+                  discription="Full-stack platform with responsive design and streamlined checkout."
                   buttonLink="https://www.github.com/BirajBuddhacharya/ABC-Books"
-                  imgUrl={dockerLogo}
+                  imgUrl={ABCBooksImg}
                 />
               </div>
               <div className="relative">
