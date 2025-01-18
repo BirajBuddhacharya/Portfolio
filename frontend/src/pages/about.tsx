@@ -1,4 +1,4 @@
-import aboutMeImg from "../assets/img/brain.png";
+import aboutMeImg from "../assets/img/aboutMe.webp";
 import FadeInSection from "../components/fadeIn"; // Make sure the path is correct
 
 function About() {
@@ -19,7 +19,7 @@ function About() {
         <div className="lg:px-28 px-4">
           <div className="relative">
             <div
-              className="relative w-[15rem] h-[13rem] bg-cover bg-no-repeat z-10 shadow-[0_0_10px_10px_black]"
+              className="relative w-[15rem] h-[13rem] bg-cover bg-no-repeat z-10"
               style={{ backgroundImage: `url(${aboutMeImg})` }}
             ></div>
             <div className="absolute left-4 top-4 w-[15rem] h-[13rem] border-4 border-primary z-0 "></div>
