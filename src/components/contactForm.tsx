@@ -83,7 +83,7 @@ function ContactForm() {
           type="submit"
         >
           {loading ? (
-          <Image src='/loadingAnimation.gif' alt='Loading animation' width={60} height={0} priority/>
+          <Image src='/loadingAnimation.gif' alt='Loading animation' width={60} height={0} priority unoptimized/>
           ) : (
             "Submit"
           )}
