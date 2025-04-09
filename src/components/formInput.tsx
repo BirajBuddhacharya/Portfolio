@@ -19,9 +19,10 @@ function FormInput({ label, placeholder, name, type, value, onChange }: FormInpu
                     name={name}
                     id={name}
                     placeholder={placeholder}
-                    className="p-2 rounded-md border border-gray-300"
+                    className="p-2 rounded-md border border-gray-300 h-32" // Increased height
                     value={value} // Bind the value to the formData state
                     onChange={onChange} // Trigger the change handler
+                    required
                 ></textarea>
             </div>
         );
@@ -38,6 +39,7 @@ function FormInput({ label, placeholder, name, type, value, onChange }: FormInpu
                 className="p-2 rounded-md border border-gray-300"
                 value={value} // Bind the value to the formData state
                 onChange={onChange} // Trigger the change handler
+                required
             />
         </div>
     );

@@ -12,40 +12,40 @@ function Nav() {
         </div>
         <div className=" h-full flex gap-4 sm:gap-10 font-semibold lg:gap-16 items-center">
             <motion.a 
-            whileHover={{ scale: 1.3 }} 
-            transition={{ type: "spring", stiffness: 300, damping: 13 }} 
+            whileHover={{ scale: 1.4 }} 
+            transition={{ type: "spring", stiffness: 300, damping: 20 }} 
             className="sm:text-base text-sm" 
             href="#home"
             >
             Home
             </motion.a>
             <motion.a 
-            whileHover={{ scale: 1.3 }} 
-            transition={{ type: "spring", stiffness: 300, damping: 13 }} 
+            whileHover={{ scale: 1.4 }} 
+            transition={{ type: "spring", stiffness: 300, damping: 20 }} 
             className="sm:text-base text-sm" 
             href="#about"
             >
             About
             </motion.a>
             <motion.a 
-            whileHover={{ scale: 1.3 }} 
-            transition={{ type: "spring", stiffness: 300, damping: 13 }} 
+            whileHover={{ scale: 1.4 }} 
+            transition={{ type: "spring", stiffness: 300, damping: 20 }} 
             className="sm:text-base text-sm" 
             href="#projects"
             >
             Projects
             </motion.a>
             <motion.a 
-            whileHover={{ scale: 1.3 }} 
-            transition={{ type: "spring", stiffness: 300, damping: 13 }} 
+            whileHover={{ scale: 1.4 }} 
+            transition={{ type: "spring", stiffness: 300, damping: 20 }} 
             className="sm:text-base text-sm" 
             href="#skills"
             >
             Skills
             </motion.a>
             <motion.a 
-            whileHover={{ scale: 1.3 }} 
-            transition={{ type: "spring", stiffness: 300, damping: 13 }} 
+            whileHover={{ scale: 1.4 }} 
+            transition={{ type: "spring", stiffness: 300, damping: 20 }} 
             className="sm:text-base text-sm" 
             href="#contact"
             >

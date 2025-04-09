@@ -1,5 +1,10 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
+/* Define a dark-variant helper for when using the .dark class */
+@custom-variant dark (&:is(.dark *));
+
+/* Original theme tokens */
 @theme {
   /* Color Palette */
   --color-primary: #ff7069;
@@ -28,7 +33,7 @@
   --font-weight-bold: 700;
 }
 
-
+/* Global base styles; note that we retain the original system typography & background */
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -36,14 +41,57 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #242424; /* Original background color */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Additional sadcn/ui tokens (mapped from the original design)
+     You can choose to use oklch() if desired, but here we’re matching exactly the original values */
+  --radius: 0.625rem;
+  --background: #242424;
+  --foreground: rgba(255, 255, 255, 0.87);
+  --card: #242424;
+  --card-foreground: rgba(255, 255, 255, 0.87);
+  --popover: #000000;
+  --popover-foreground: rgba(255, 255, 255, 0.87);
+
+  /* Map original primary, neutral, accent values into sadcn/ui properties.
+     (Adjust the “foreground” versions as needed, here we assume a white/bright
+     contrasting color for text on top of the colored backgrounds.) */
+  --primary: #ff7069;
+  --primary-foreground: #ffffff;
+  --secondary: #0A0A11;
+  --secondary-foreground: #ffffff;
+  --muted: #928a97;
+  --muted-foreground: #ffffff;
+  --accent: #6d4ff0;
+  --accent-foreground: #ffffff;
+
+  /* For destructive, border, input, ring and the extra tokens we set them to match the original scheme.
+     (Some of these were not defined in your original tokens; adjust if needed.) */
+  --destructive: #ff7069;
+  --border: #242424;
+  --input: #242424;
+  --ring: #ff7069;
+  --chart-1: #ff7069;
+  --chart-2: #6d4ff0;
+  --chart-3: #0A0A11;
+  --chart-4: #928a97;
+  --chart-5: #ff7069;
+  --sidebar: #242424;
+  --sidebar-foreground: rgba(255, 255, 255, 0.87);
+  --sidebar-primary: #ff7069;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #6d4ff0;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #242424;
+  --sidebar-ring: #ff7069;
 }
 
+/* Base element styling */
 body {
   margin: 0;
   display: flex;
@@ -60,6 +108,90 @@ h1 {
   text-align: center;
 }
 
-html{
+html {
   scroll-behavior: smooth;
+}
+
+/* Additional inline theme values for sadcn/ui that derive from our properties */
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* Dark mode overrides using the same original values */
+.dark {
+  --background: #242424;
+  --foreground: rgba(255, 255, 255, 0.87);
+  --card: #242424;
+  --card-foreground: rgba(255, 255, 255, 0.87);
+  --popover: #242424;
+  --popover-foreground: rgba(255, 255, 255, 0.87);
+  --primary: #ff7069;
+  --primary-foreground: #ffffff;
+  --secondary: #0A0A11;
+  --secondary-foreground: #ffffff;
+  --muted: #928a97;
+  --muted-foreground: #ffffff;
+  --accent: #6d4ff0;
+  --accent-foreground: #ffffff;
+  --destructive: #ff7069;
+  --border: #242424;
+  --input: #242424;
+  --ring: #ff7069;
+  --chart-1: #ff7069;
+  --chart-2: #6d4ff0;
+  --chart-3: #0A0A11;
+  --chart-4: #928a97;
+  --chart-5: #ff7069;
+  --sidebar: #242424;
+  --sidebar-foreground: rgba(255, 255, 255, 0.87);
+  --sidebar-primary: #ff7069;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #6d4ff0;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #242424;
+  --sidebar-ring: #ff7069;
+}
+
+/* Base layer for border and background utilities */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
