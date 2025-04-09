@@ -3,11 +3,12 @@
 import React, { useState, ChangeEvent } from "react";
 import axios from "axios";
 import FormInput from "./formInput";
+import { toast } from "sonner"
+import Image from 'next/image'
 
 function ContactForm() {
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    name: "",
-    phoneNumber: "",
     email: "",
     message: "",
   });
@@ -25,20 +26,32 @@ function ContactForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      // starting loading
+      setLoading(true)
+
+      // sending email
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/connect/",
+        "/api/contact/",
         formData
       );
-      alert("Data Saved" + response);
+
+      // displaying success message
+      toast(JSON.stringify(response.data.message).replace(/"/g, ""));
+
+      // clearing contact form
+      setFormData({ email: "", message: "" }); // Clear input fields after submit
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.detail ||
         error.response?.data ||
         error.message ||
         "An unknown error occurred";
-        
-        alert(`Failed to save data: ${errorMessage}`);
+
+      toast(`${JSON.stringify(errorMessage).replace(/[{}"]/g, "")}`);
     }
+
+    // disabling loading
+    setLoading(false)
   };
 
   return (
@@ -48,22 +61,6 @@ function ContactForm() {
       method="POST"
       id="contact"
     >
-      <FormInput
-        label="Name"
-        placeholder="Enter your name"
-        name="name"
-        type="text"
-        value={formData.name}
-        onChange={handleChange}
-      />
-      <FormInput
-        label="Phone Number"
-        placeholder="Enter your phone number"
-        name="phoneNumber"
-        type="number"
-        value={formData.phoneNumber}
-        onChange={handleChange}
-      />
       <FormInput
         label="Email"
         placeholder="Enter your email"
@@ -81,11 +78,16 @@ function ContactForm() {
         onChange={handleChange}
       />
       <div className="flex justify-center">
-        <input
+        <button
+          className="flex justify-center mt-2 items-center bg-card rounded-full hover:cursor-pointer w-45 h-12 mx-auto my-auto"
           type="submit"
-          className="mt-2 bg-primary py-2 px-9 rounded-full hover:cursor-pointer"
-          value="Submit"
-        />
+        >
+          {loading ? (
+          <Image src='/loadingAnimation.gif' alt='Loading animation' width={60} height={0}/>
+          ) : (
+            "Submit"
+          )}
+        </button>
       </div>
     </form>
   );

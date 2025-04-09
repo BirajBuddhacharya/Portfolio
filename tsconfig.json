@@ -1,13 +1,10 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "baseUrl": ".", 
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "baseUrl": ".",
     "paths": {
+      "@/*": ["src/*"],
       "@/components/*": ["components/*"],
       "@/styles/*": ["styles/*"]
     },
@@ -22,20 +19,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{ "name": "next" }],
     "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
-    ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
