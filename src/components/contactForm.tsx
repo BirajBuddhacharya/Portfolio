@@ -46,6 +46,7 @@ function ContactForm() {
       className="flex-1 flex flex-col text-left p-10"
       onSubmit={handleSubmit}
       method="POST"
+      id="contact"
     >
       <FormInput
         label="Name"

@@ -29,7 +29,7 @@ const SkillsCard = ({ img, content, glowColor }: SkillsCardProps) => {
           className="h-auto w-full relative z-20"
         />
       </div>
-      <div className="text-sm">{content}</div>
+      <div className="text-sm text-center">{content}</div>
     </div>
   );
 };

@@ -13,9 +13,9 @@ function Home() {
       <div id="hero" className="w-full h-full grid grid-cols-1 sm:grid-cols-2 justify-items-center py-4 lg:py-16">
         <div className="px-16 w-full flex items-center justify-center row-start-2 sm:row-start-auto">
           <div className="text-left">
-            <h1 className="font-semibold">Hello I'm, </h1>
+            <h1 className="font-semibold" style={{ textAlign: "left" }}>Hello I'm, </h1>
             <div className="inline">
-              <h1 className="text-primary typewrite font-semibold">
+              <h1 className="text-primary typewrite font-semibold" style={{ textAlign: "left" }}>
                 <span>Biraj</span>
               </h1>
             </div>
