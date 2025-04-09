@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from "react";
+import { motion } from 'framer-motion'
 
 type SkillsCardProps = {
   img: string;
   content: string;
-glowColor: string;
+  glowColor: string;
 };
 
 const SkillsCard = ({ img, content, glowColor }: SkillsCardProps) => {
@@ -13,7 +14,9 @@ const SkillsCard = ({ img, content, glowColor }: SkillsCardProps) => {
 
   return (
     <div className="flex flex-col items-center w-20 gap-4 ">
-      <div
+      <motion.div
+        whileHover={{ scale: 1.3 }}
+        transition={{ type: "spring", stiffness: 300 }}
         className="relative hover:cursor-pointer"
         onMouseEnter={() => setIsHovered(true)} // Set hover state
         onMouseLeave={() => setIsHovered(false)} // Reset hover state"
@@ -28,7 +31,7 @@ const SkillsCard = ({ img, content, glowColor }: SkillsCardProps) => {
           alt="Skills image"
           className="h-auto w-full relative z-20"
         />
-      </div>
+      </motion.div>
       <div className="text-sm text-center">{content}</div>
     </div>
   );

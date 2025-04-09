@@ -1,3 +1,5 @@
+'use client';
+
 import SkillsCard from "../components/skillsCard";
 import FadeInSection from "../components/fadeIn"; // Make sure the path is correct
 
