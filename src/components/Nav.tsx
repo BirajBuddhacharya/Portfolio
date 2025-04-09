@@ -13,7 +13,7 @@ function Nav() {
         <div className=" h-full flex gap-4 sm:gap-10 font-semibold lg:gap-16 items-center">
             <motion.a 
             whileHover={{ scale: 1.3 }} 
-            transition={{ type: "spring", stiffness: 300 }} 
+            transition={{ type: "spring", stiffness: 300, damping: 13 }} 
             className="sm:text-base text-sm" 
             href="#home"
             >
@@ -21,7 +21,7 @@ function Nav() {
             </motion.a>
             <motion.a 
             whileHover={{ scale: 1.3 }} 
-            transition={{ type: "spring", stiffness: 300 }} 
+            transition={{ type: "spring", stiffness: 300, damping: 13 }} 
             className="sm:text-base text-sm" 
             href="#about"
             >
@@ -29,7 +29,7 @@ function Nav() {
             </motion.a>
             <motion.a 
             whileHover={{ scale: 1.3 }} 
-            transition={{ type: "spring", stiffness: 300 }} 
+            transition={{ type: "spring", stiffness: 300, damping: 13 }} 
             className="sm:text-base text-sm" 
             href="#projects"
             >
@@ -37,7 +37,7 @@ function Nav() {
             </motion.a>
             <motion.a 
             whileHover={{ scale: 1.3 }} 
-            transition={{ type: "spring", stiffness: 300 }} 
+            transition={{ type: "spring", stiffness: 300, damping: 13 }} 
             className="sm:text-base text-sm" 
             href="#skills"
             >
@@ -45,7 +45,7 @@ function Nav() {
             </motion.a>
             <motion.a 
             whileHover={{ scale: 1.3 }} 
-            transition={{ type: "spring", stiffness: 300 }} 
+            transition={{ type: "spring", stiffness: 300, damping: 13 }} 
             className="sm:text-base text-sm" 
             href="#contact"
             >

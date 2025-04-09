@@ -18,9 +18,9 @@ function Skills() {
         className="w-full grid grid-cols-1 lg:grid-cols-3 items-center justify-center gap-12"
       >
         <div className="px-10">
-          <h3 className="text-3xl font-bold text-center">
+          <h3 className="text-4xl font-bold text-center ">
             <span className="text-primary">10+ </span>
-            <br /> Skills
+            <span className="block mt-3">Skills</span>
           </h3>
         </div>
         <div className="lg:col-span-2 flex gap-x-16 sm:gap-x-40 gap-y-20 flex-wrap justify-center items-center">

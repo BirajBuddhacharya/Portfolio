@@ -1,3 +1,6 @@
+'use client'
+
+import { motion } from "framer-motion";
 import Nav from "../components/Nav";
 import mainPic from "/public/img/mainPic.png";
 import Image from "next/image";
@@ -23,19 +26,23 @@ function Home() {
               Software Engineer and AI Engineer aiming to
               solve real world problem with tech.
             </p>
-            <div className="flex justify-center items-center gap-4 mt-8">
-              <a
+            <div className="flex justify-center items-center gap-6 mt-8">
+              <motion.a
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
                 className="bg-primary border-primary border-2 text-white rounded-md px-5 py-1 hover:cursor-pointer hover:text-white"
                 href="#contact"
               >
                 Contact
-              </a>
-              <a
+              </motion.a>
+              <motion.a
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
                 className="border-primary border-2 rounded-md px-5 py-1 text-white hover:cursor-pointer hover:text-white"
                 href="#projects"
               >
                 Projects
-              </a>
+              </motion.a>
             </div>
           </div>
         </div>

@@ -24,8 +24,8 @@ function Projects() {
 
   return (
     <FadeInSection idTrack="projects">
-      <section id="projects" className="w-full flex flex-col gap-4">
-        <h1 className="text-3xl font-bold m-10">
+      <section id="projects" className="w-full flex flex-col gap-2">
+        <h1 className="text-3xl font-bold m-6">
           My <br />
           <span className="text-primary">Projects</span>
         </h1>
