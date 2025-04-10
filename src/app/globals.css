@@ -31,6 +31,9 @@
   /* Font Weights */
   --font-weight-normal: 400;
   --font-weight-bold: 700;
+
+  /* Custom break points */
+  --breakpoint-3xl: 1846px;
 }
 
 /* Global base styles; note that we retain the original system typography & background */

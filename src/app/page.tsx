@@ -8,7 +8,7 @@ import Footer from "../pages/footer";
 
 function App() {
   return (
-    <div className="bg-neutral sm:px-[2rem] lg:px-[10rem] py-[2rem] w-screen font-body flex flex-col gap-48 relative overflow-hidden text-white">
+    <div className="bg-neutral sm:px-[2rem] lg:px-[10rem] 2xl:px-[20rem] py-[2rem] w-screen font-body flex flex-col gap-48 relative overflow-hidden text-white">
       <Home />
       <About />
       <Projects />
