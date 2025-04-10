@@ -14,7 +14,7 @@ function Nav() {
             <motion.a 
             whileHover={{ scale: 1.4 }} 
             transition={{ type: "spring", stiffness: 300, damping: 20 }} 
-            className="sm:text-base text-sm" 
+            className="sm:text-base text-sm hidden sm:inline" 
             href="#home"
             >
             Home
