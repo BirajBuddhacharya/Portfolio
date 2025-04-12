@@ -12,7 +12,7 @@ function Footer() {
   const github: string = "https://www.github.com/BirajBuddhacharya";
   const linkedin: string = 'https://www.linkedin.com/in/biraj-buddhacharya'
   return (
-    <FadeInSection idTrack="contact">
+    <FadeInSection>
       <footer className="flex flex-col gap-5" id="contact">
         <h1 className="text-3xl font-bold">
           Lets <span className="text-primary">Connect!</span>

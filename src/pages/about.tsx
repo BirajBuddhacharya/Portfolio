@@ -5,7 +5,7 @@ import Image from "next/image"
 
 function About() {
   return (
-    <FadeInSection idTrack="about">
+    <FadeInSection>
       <section id="about" className="w-full grid grid-cols-1 sm:grid-cols-2 sm:gap-0 gap-10 justify-items-center relative">
         <div className="bg-accent h-32 w-32 absolute top-[-6rem] left-0 rounded-full blur-3xl opacity-50"></div>
         <div className="bg-primary h-32 w-32 absolute right-0 bottom-[-6rem] rounded-full blur-3xl opacity-50"></div>

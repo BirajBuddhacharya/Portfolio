@@ -15,8 +15,15 @@ function Home() {
       <Nav />
       <div id="hero" className="w-full h-full grid grid-cols-1 sm:grid-cols-2 justify-items-center py-4 lg:py-16">
         <div className="px-16 w-full flex items-center justify-center row-start-2 sm:row-start-auto">
-          <div className="text-left">
-            <h1 className="font-semibold" style={{ textAlign: "left" }}>Hello I'm, </h1>
+          <motion.div 
+            className="text-left"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <h1 className="font-semibold" style={{ textAlign: "left" }}>
+              Hello I'm,
+            </h1>
             <div className="inline">
               <h1 className="text-primary typewrite font-semibold" style={{ textAlign: "left" }}>
                 <span>Biraj</span>
@@ -44,15 +51,20 @@ function Home() {
                 Projects
               </motion.a>
             </div>
-          </div>
+          </motion.div>
         </div>
-        <div className="flex-grow flex items-center justify-center row-start-1 sm:row-start-auto">
+        <motion.div 
+          className="flex-grow flex items-center justify-center row-start-1 sm:row-start-auto"
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
           <Image
             src={mainPic}
             alt="Profile Picture"
             className="w-[28rem] h-[31rem]"
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );

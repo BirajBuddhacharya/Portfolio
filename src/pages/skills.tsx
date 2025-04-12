@@ -12,7 +12,7 @@ const tensorflowLogo = "/icons/tensorflow.svg";
 
 function Skills() {
   return (
-    <FadeInSection idTrack="skills">
+    <FadeInSection>
       <section
         id="skills"
         className="w-full grid grid-cols-1 lg:grid-cols-3 items-center justify-center gap-12"
