@@ -63,6 +63,7 @@ function Home() {
             src={mainPic}
             alt="Profile Picture"
             className="w-[28rem] h-[31rem]"
+            priority
           />
         </motion.div>
       </div>

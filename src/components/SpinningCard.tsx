@@ -14,7 +14,7 @@ export default function SpinningCard({
   buttonLink: string;
   CardId: string;
 }) {
-  const controls = useAnimation()
+  const controls = useAnimation();
   return (
     <>
       <motion.div
