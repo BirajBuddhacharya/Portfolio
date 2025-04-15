@@ -5,6 +5,7 @@ import axios from "axios";
 import FormInput from "./formInput";
 import { toast } from "sonner"
 import Image from 'next/image'
+import CustomButton from "./customButton"
 
 function ContactForm() {
   const [loading, setLoading] = useState(false)
@@ -78,16 +79,7 @@ function ContactForm() {
         onChange={handleChange}
       />
       <div className="flex justify-center">
-        <button
-          className="flex justify-center mt-2 items-center bg-card rounded-full hover:cursor-pointer w-45 h-12 mx-auto my-auto"
-          type="submit"
-        >
-          {loading ? (
-          <Image src='/loadingAnimation.gif' alt='Loading animation' width={60} height={0} priority unoptimized/>
-          ) : (
-            "Submit"
-          )}
-        </button>
+        <CustomButton text="submit" loading={loading} className="mt-2"/>
       </div>
     </form>
   );

@@ -4,6 +4,7 @@ import FadeInSection from "../components/fadeIn"; // Make sure the path is corre
 import "/src/styles/spinningProjects.css";
 import { useState } from "react";
 import SpinningCard from "../components/SpinningCard";
+import { motion } from 'framer-motion';
 
 // global vairables 
 const rightArrow = "/icons/rightArrow.png";
@@ -32,9 +33,12 @@ function Projects() {
         <div className="flex justify-center items-center gap-10">
           <div className="h-12 w-12">
             {rotation < maxRotation && (
-              <button
+              <motion.button
                 className="h-full w-full p-3 rotate-180 bg-transparent border-primary rounded-full border-1 hover:cursor-pointer"
                 onClick={handleLeftClick}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
               >
                 <div
                   className="h-full w-full"
@@ -44,14 +48,17 @@ function Projects() {
                     backgroundRepeat: "no-repeat",
                   }}
                 />
-              </button>
+              </motion.button>
             )}
           </div>
           <div className="h-12 w-12">
             {rotation > minRotation && (
-              <button
+              <motion.button
                 className="h-full w-full p-3 rotate-180 bg-transparent border-primary rounded-full border-1 hover:cursor-pointer"
                 onClick={handleRightClick}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
               >
                 <div
                   className="h-full w-full rotate-180"
@@ -61,18 +68,20 @@ function Projects() {
                     backgroundRepeat: "no-repeat",
                   }}
                 />
-              </button>
+              </motion.button>
             )}
           </div>
         </div>
         <div className="w-full h-[30rem] flex justify-center overflow-y-clip">
           <div className="relative">
             <div className="absolute top-1/2 w-[61rem] h-[61rem] blur-3xl bg-accent opacity-90 shadow-[0_0_30px_60px_rgba(255,255,255, 0.5)] rounded-full"></div>
-            <div
+            <motion.div
               id="roundedDiv"
-              className="h-[70rem] w-[70rem] relative top-[40%] rounded-full grid grid-cols-3 grid-rows-3 gap-[6rem] ease duration-500"
-              style={{ transform: `rotate(${rotation}deg)` }}
+              className="h-[70rem] w-[70rem] relative top-[40%] rounded-full grid grid-cols-3 grid-rows-3 gap-[6rem]"
+              animate={{ rotate: rotation }}
+              transition={{ type: 'spring', stiffness: 100, damping: 10 }}
             >
+
               <div className="relative">
                 <SpinningCard
                   CardId="spinningCard1"
@@ -118,7 +127,7 @@ function Projects() {
               <div className="relative">
                 {/* <div id="spinningCard9" className="spinningCard"></div> */}
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
