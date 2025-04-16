@@ -14,6 +14,8 @@ const ABCBooksImg = "/img/ABCBooks.jpg";
 
 function Projects() {
   const [rotation, setRotation] = useState(0);
+
+  
   const [minRotation, maxRotation] = [-45, 45];
 
   const handleRightClick = () => {
