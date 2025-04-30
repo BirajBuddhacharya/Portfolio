@@ -9,7 +9,7 @@ function Nav() {
     <header>
       <nav className="relative w-full h-10 flex justify-center sm:justify-between z-10 px-6 text-white">
         <div className="h-full w-12 sm:block hidden">
-          <Image src="/img/logo.png" alt="Logo" width={100} height={100} />
+          <Image src="/img/logo.png" alt="Logo" width={100} height={100} priority/>
         </div>
         <div className=" h-full flex gap-4 sm:gap-10 font-semibold lg:gap-16 items-center">
           <motion.a
