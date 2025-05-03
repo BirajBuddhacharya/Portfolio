@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 type SkillsCardProps = {
   img: string;
@@ -26,9 +27,11 @@ const SkillsCard = ({ img, content, glowColor }: SkillsCardProps) => {
         style={{ backgroundColor: isHovered ? glowColor : "transparent" }}
       ></div>
 
-      <img
+      <Image
         src={img}
         alt="Skills image"
+        width={100}
+        height={100}
         className="h-auto w-full relative z-20"
       />
       </div>

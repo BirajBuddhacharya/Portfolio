@@ -1,5 +1,6 @@
 'use client'
 import { motion, useAnimation } from 'framer-motion';
+import Image from 'next/image'
 
 export default function SpinningCard({
   imgUrl,
@@ -24,12 +25,18 @@ export default function SpinningCard({
         id={CardId}
       >
         <div className="relative w-full h-full overflow-hidden rounded-lg">
-          <motion.div
-            style={{ backgroundImage: `url(${imgUrl})` }}
-            className="absolute top-0 left-0 w-full h-full bg-cover bg-no-repeat"
-            animate = {controls}
+          <motion.div 
+            className="absolute top-0 left-0 w-full h-full"
+            animate={controls}
             transition={{ duration: 0.2 }}
-          />
+          >
+            <Image
+              src={imgUrl}
+              alt={`${heading} project image`}
+              fill
+              className="object-cover"
+            />
+          </motion.div>
         </div>
         <h2 className="text-xl w-full text-center mb-2 text-white">{heading}</h2>
         <p className="text-sm text-left text-white">{discription}</p>

@@ -1,3 +1,4 @@
+'use client';
 import FooterCard from "../components/footerCard";
 import phone from "/public/icons/phone.svg";
 import email from "/public/icons/email.svg";
@@ -7,6 +8,7 @@ import linkedinLogo from "/public/icons/linkedin.png";
 import ContactForm from "../components/contactForm";
 import FadeInSection from "../components/fadeIn"; // Make sure the path is correct
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 
 function Footer() {
   const github: string = "https://www.github.com/BirajBuddhacharya";
@@ -35,23 +37,24 @@ function Footer() {
               content="Tripureshwor, Kathmandu"
             />
             <div className="w-full flex justify-center p-2 gap-4 items-center my-2">
-              <a href={github} target="blank">
-                <Image
-                  src={githubLogo}
-                  alt="github logo"
-                  className="h-6 w-auto"
-                />
-              </a>
-              <a
+              <motion.a href={github} target="blank" whileHover={{scale: 1.3}}>
+                  <Image
+                    src={githubLogo}
+                    alt="github logo"
+                    className="h-6 w-auto"
+                  />
+              </motion.a>
+              <motion.a
                 href={linkedin}
                 target="blank"
+                whileHover={{scale: 1.3}}
               >
                 <Image
                   src={linkedinLogo}
                   alt="Linked in logo"
                   className="h-7 w-auto"
                 />
-              </a>
+              </motion.a>
             </div>
           </div>
           <ContactForm />

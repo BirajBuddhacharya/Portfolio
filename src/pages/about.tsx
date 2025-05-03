@@ -10,9 +10,9 @@ function About() {
         <div className="bg-accent h-32 w-32 absolute top-[-6rem] left-0 rounded-full blur-3xl opacity-50"></div>
         <div className="bg-primary h-32 w-32 absolute right-0 bottom-[-6rem] rounded-full blur-3xl opacity-50"></div>
         <div className="flex flex-col text-left lg:px-20 px-10">
-          <div className="font-heading text-4xl font-semibold my-5">
+          <h2 className="font-heading text-4xl font-semibold my-5">
             About <span className="text-primary">Me!</span>
-          </div>
+          </h2>
           <p className="text-base text-left font-extralight">
             Software Engineer. Skilled in Python and machine learning. Passionate about creating impactful tech solutions and eager to connect with like-minded
             professionals.

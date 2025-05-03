@@ -1,3 +1,9 @@
+# *
 User-agent: *
 Allow: /
-    
+
+# Host
+Host: birajbuddhacharya.com.np
+
+# Sitemaps
+Sitemap: birajbuddhacharya.com.np/sitemap.xml
