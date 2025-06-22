@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { Calendar, Group, Home, Inbox, Search, Settings, Speech } from "lucide-react"
 
 import {
   Sidebar,
@@ -8,58 +8,114 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarGroupLabel   
 } from "@/components/ui/sidebar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import Link from "next/link"
 
 // Menu items.
-const items = [
+const groupedItems = [
   {
-    title: "Dashboard",
-    url: "#",
-    icon: Home,
+    group: "Main",
+    items: [
+      {
+        title: "Dashboard",
+        url: "/admin/",
+        icon: Home,
+      },
+      {
+        title: "Analytics",
+        url: "/admin/analytics",
+        icon: Search,
+      },
+    ],
   },
   {
-    title: "Blogs",
-    url: "#",
-    icon: Inbox,
+    group: "Content",
+    items: [
+      {
+        title: "Blogs",
+        url: "/admin/blogs",
+        icon: Inbox,
+      },
+      {
+        title: "Projects",
+        url: "/admin/projects",
+        icon: Calendar,
+      },
+      {
+        title: "Testimonials",
+        url: "/admin/testimonials",
+        icon: Speech,
+      },
+    ],
   },
   {
-    title: "Projects",
-    url: "#",
-    icon: Calendar,
+    group: "Configuration",
+    items: [
+      {
+        title: "Settings",
+        url: "/admin/settings",
+        icon: Settings,
+      },
+    ],
   },
-  {
-    title: "Analytics",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-]
+];
+
+const user = {
+  name: "Biraj Buddhacharya",
+  email: "birajbuddhacharya@gmail.com",
+  avatar: "https://avatars.githubusercontent.com/u/123456789?v=4"
+}
 
 export default function AppSidebar() {
   return (
     <Sidebar>
+      <SidebarHeader className="flex gap-2 justify-start flex-row items-center">
+        <Avatar className="h-8 w-8 rounded-full">
+          <AvatarImage src='/img/logo.png' alt={user.name} />
+          <AvatarFallback className="rounded-full">L</AvatarFallback>
+        </Avatar>
+        <div className="text-2xl font-bold text-center">
+          Alchemy Place
+        </div>
+      </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {groupedItems.map((group) => (
+          <SidebarGroup key={group.group} className="px-2">
+            <SidebarGroupLabel>{group.group}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {group.items.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
+     
+      <SidebarFooter>
+        <div className="flex items-center gap-2 p-4">
+          <Avatar className="h-8 w-8 rounded-lg">
+            <AvatarImage src={user.avatar} alt={user.name} />
+            <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+          </Avatar>
+          <div className="grid flex-1 text-left text-sm leading-tight">
+            <span className="truncate font-medium">{user.name}</span>
+            <span className="truncate text-xs">{user.email}</span>
+          </div>
+        </div>
+      </SidebarFooter>
     </Sidebar>
   )
 }
