@@ -1,7 +1,7 @@
 'use client';
 import { motion, useAnimation } from "framer-motion";
 import { useState } from "react";
-import { Cover } from "@/components/components/ui/cover";
+import { Cover } from "@/components/ui/cover";
 import { cn } from "@/components/lib/utils";
 import Image from 'next/image'
 interface ButtonProp {

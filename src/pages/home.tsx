@@ -13,7 +13,7 @@ function Home() {
         className="h-[50rem] w-[50rem] bg-primary rounded-full -translate-x-1/2 -translate-y-1/2  absolute top-[-20rem] left-1/2 blur-3xl opacity-90 z-10 shadow-[0_0_10px_10px_black]"
       ></div>
       <Nav />
-      <div id="hero" className="w-full h-full grid grid-cols-1 sm:grid-cols-2 justify-items-center py-4 lg:py-16">
+      <div id="hero" className="w-full h-full grid grid-cols-1 sm:grid-cols-2 justify-items-center py-4 lg:pt-12 lg:pb-0">
         <div className="px-16 w-full flex items-center justify-center row-start-2 sm:row-start-auto">
           <motion.div 
             className="text-left"
