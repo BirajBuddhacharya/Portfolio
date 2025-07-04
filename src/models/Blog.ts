@@ -8,7 +8,8 @@ export interface IBlog extends Document {
     coverImage: string;
     createdAt: Date;
     updatedAt: Date;
-    published: boolean; 
+    published: boolean;
+    description: string;
 }
 
 const blogSchema: Schema<IBlog> = new mongoose.Schema<IBlog>({
@@ -33,19 +34,15 @@ const blogSchema: Schema<IBlog> = new mongoose.Schema<IBlog>({
         type: String,
         required: true,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now,
-    },
     published: {
         type: Boolean,
         default: false,
+    },
+    description: {
+        type: String,
+        required: true,
     }
-});
+}, { timestamps: true });
 
 const Blog: Model<IBlog> = mongoose.models.Blog || mongoose.model<IBlog>('Blog', blogSchema);
 

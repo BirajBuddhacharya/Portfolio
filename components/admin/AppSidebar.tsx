@@ -1,4 +1,4 @@
-import { Calendar, Group, Home, Inbox, Search, Settings, Speech } from "lucide-react"
+import { Calendar, Group, Home, BookOpen, Search, Settings, Speech } from "lucide-react"
 
 import {
   Sidebar,
@@ -10,7 +10,7 @@ import {
   SidebarMenuItem,
   SidebarHeader,
   SidebarFooter,
-  SidebarGroupLabel   
+  SidebarGroupLabel
 } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
@@ -38,7 +38,7 @@ const groupedItems = [
       {
         title: "Blogs",
         url: "/admin/blogs",
-        icon: Inbox,
+        icon: BookOpen,
       },
       {
         title: "Projects",
@@ -72,17 +72,19 @@ const user = {
 
 export default function AppSidebar() {
   return (
-    <Sidebar>
-      <SidebarHeader className="flex gap-2 justify-start flex-row items-center">
-        <Avatar className="h-8 w-8 rounded-full">
-          <AvatarImage src='/img/logo.png' alt={user.name} />
-          <AvatarFallback className="rounded-full">L</AvatarFallback>
-        </Avatar>
-        <div className="text-2xl font-bold text-center">
-          Alchemy Place
-        </div>
-      </SidebarHeader>
-      <SidebarContent>
+    <Sidebar className="border-none">
+      <Link href="/">
+        <SidebarHeader className="flex gap-3 justify-start p-4 flex-row items-center">
+          <Avatar className="h-8 w-7">
+            <AvatarImage src='/img/logo.png' alt={user.name} />
+            <AvatarFallback className="">A</AvatarFallback>
+          </Avatar>
+          <div className="font-polysans font-medium text-xl">
+            Alchemy Place
+          </div>
+        </SidebarHeader>
+      </Link>
+      <SidebarContent className="">
         {groupedItems.map((group) => (
           <SidebarGroup key={group.group} className="px-2">
             <SidebarGroupLabel>{group.group}</SidebarGroupLabel>
@@ -103,19 +105,19 @@ export default function AppSidebar() {
           </SidebarGroup>
         ))}
       </SidebarContent>
-     
+
       <SidebarFooter>
         <div className="flex items-center gap-2 p-4">
           <Avatar className="h-8 w-8 rounded-lg">
             <AvatarImage src={user.avatar} alt={user.name} />
             <AvatarFallback className="rounded-lg">CN</AvatarFallback>
           </Avatar>
-          <div className="grid flex-1 text-left text-sm leading-tight">
+          <div className="grid flex-1 text-left text-sm leading-tight ">
             <span className="truncate font-medium">{user.name}</span>
             <span className="truncate text-xs">{user.email}</span>
           </div>
         </div>
       </SidebarFooter>
-    </Sidebar>
+    </Sidebar >
   )
 }

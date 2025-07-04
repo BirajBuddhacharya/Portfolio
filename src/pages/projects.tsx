@@ -1,6 +1,5 @@
 'use client'
 
-import FadeInSection from "../components/fadeIn"; // Make sure the path is correct
 import "/src/styles/spinningProjects.css";
 import { useState } from "react";
 import SpinningCard from "../components/SpinningCard";
@@ -24,7 +23,6 @@ function Projects() {
   };
 
   return (
-    <FadeInSection>
       <section id="projects" className="w-full flex flex-col gap-2">
         <h1 className="text-3xl font-bold m-6">
           My <br />
@@ -131,7 +129,6 @@ function Projects() {
           </div>
         </div>
       </section>
-    </FadeInSection>
   );
 }
 

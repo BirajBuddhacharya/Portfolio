@@ -1,13 +1,13 @@
-export default function ProjectsPage() {
+import HeaderActions from "./components/HeaderActions";
+
+export default function BlogsPage() {
   return (
-    <section className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <div className="text-3xl font-bold mb-4">Projects</div>
-      <div className="text-lg text-gray-600">Coming Soon...</div>
-      <div className="mt-8">
-        <a href="/" className="text-blue-500 hover:underline">
-          Go back to Home
-        </a>
-      </div>
+    <section className="flex flex-col items-start justify-start">
+      <h2 className="text-3xl font-semibold mb-2">Manage Projects </h2>
+      <p className="text-muted mb-4">
+        Curate your portfolio's centerpiece! Add, edit, and showcase your standout projects that demonstrate your expertise.
+      </p>
+      <HeaderActions />
     </section>
-  );
-}
+  )
+};
