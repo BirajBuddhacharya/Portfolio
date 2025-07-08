@@ -9,14 +9,14 @@ type statsCardProps = {
 
 export default function StatsCard({ icon, label, value }: statsCardProps) {
     return (
-        <Card>
-            <CardContent className="flex items-center gap-6">
+        <Card className="justify-center">
+            <CardContent className="flex items-center gap-4">
                 <div>
                     {icon}
                 </div>
                 <div>
                     <p className="text-muted mb-[1px]">{label}</p>
-                    <p className="text-3xl font-semibold">
+                    <p className="text-2xl font-semibold">
                         {typeof value === "number" ? (
                             <CountUp
                                 from={0}
