@@ -1,9 +1,9 @@
-import "./App.css";
-import Home from "../pages/home";
-import About from "../pages/about";
-import Projects from "../pages/projects";
-import Skills from "../pages/skills";
-import Footer from "../pages/footer";
+import "../App.css";
+import Home from "./sections/home";
+import About from "./sections/about";
+import Projects from "./sections/projects";
+import Skills from "./sections/skills";
+import Footer from "./sections/footer";
 
 function App() {
   return (

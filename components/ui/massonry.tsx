@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import React, {
   useEffect,
   useLayoutEffect,
@@ -13,31 +13,20 @@ const useMedia = (
   values: number[],
   defaultValue: number
 ): number => {
-  // Check if window.matchMedia is available (only in client)
-  const isClient = typeof window !== "undefined" && typeof window.matchMedia === "function";
+  const get = () =>
+    values[queries.findIndex((q) => matchMedia(q).matches)] ?? defaultValue;
 
-  const get = () => {
-    if (!isClient) return defaultValue;
-    const index = queries.findIndex((q) => window.matchMedia(q).matches);
-    return values[index] ?? defaultValue;
-  };
-
-  const [value, setValue] = useState<number>(get);
+  const [value, setValue] = useState<number>(defaultValue);
 
   useEffect(() => {
-    if (!isClient) return;
-
+    setValue(get());
     const handler = () => setValue(get);
-    const mqls = queries.map((q) => window.matchMedia(q));
-
-    mqls.forEach((mql) => mql.addEventListener("change", handler));
-    // Initial check in case media changes after mount
-    setValue(get);
-
-    return () => {
-      mqls.forEach((mql) => mql.removeEventListener("change", handler));
-    };
-  }, [queries, values, defaultValue, isClient]);
+    queries.forEach((q) => matchMedia(q).addEventListener("change", handler));
+    return () =>
+      queries.forEach((q) =>
+        matchMedia(q).removeEventListener("change", handler)
+      );
+  }, [queries, values, defaultValue]); // Add dependencies for safety
 
   return value;
 };
@@ -79,6 +68,13 @@ interface Item {
   height: number;
 }
 
+interface GridItem extends Item {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
 interface MasonryProps {
   items: Item[];
   ease?: string;
@@ -116,7 +112,7 @@ const Masonry: React.FC<MasonryProps> = ({
   const [containerRef, { width }] = useMeasure<HTMLDivElement>();
   const [imagesReady, setImagesReady] = useState(false);
 
-  const getInitialPosition = (item: any) => {
+  const getInitialPosition = (item: GridItem) => {
     const containerRect = containerRef.current?.getBoundingClientRect();
     if (!containerRect) return { x: item.x, y: item.y };
 
@@ -151,7 +147,7 @@ const Masonry: React.FC<MasonryProps> = ({
     preloadImages(items.map((i) => i.img)).then(() => setImagesReady(true));
   }, [items]);
 
-  const grid = useMemo(() => {
+  const grid = useMemo<GridItem[]>(() => {
     if (!width) return [];
     const colHeights = new Array(columns).fill(0);
     const gap = 16;
@@ -217,7 +213,7 @@ const Masonry: React.FC<MasonryProps> = ({
       gsap.to(`[data-key="${id}"]`, {
         scale: hoverScale,
         duration: 0.3,
-        ease: "power2.out",
+        ease: "power2.out"
       });
     }
     if (colorShiftOnHover) {
@@ -231,7 +227,7 @@ const Masonry: React.FC<MasonryProps> = ({
       gsap.to(`[data-key="${id}"]`, {
         scale: 1,
         duration: 0.3,
-        ease: "power2.out",
+        ease: "power2.out"
       });
     }
     if (colorShiftOnHover) {
