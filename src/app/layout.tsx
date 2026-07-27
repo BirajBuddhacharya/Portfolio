@@ -1,32 +1,62 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono, Sora } from "next/font/google";
 import { Toaster } from "../../components/components/ui/sonner";
+import { QueryProvider } from "../providers/QueryProvider";
 import "./globals.css";
-import Head from 'next/head';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
+const sora = Sora({
+  variable: "--font-sora",
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+});
 
 export const metadata: Metadata = {
-  title: 'Biraj Buddhacharya | Software & AI Engineer',
+  title: "Biraj Buddhacharya | ML Engineer & Full-stack Developer",
   description:
-    'I\'m Biraj Buddhacharya, a Software and AI Engineer passionate about solving real-world problems with Python and machine learning. Explore my projects and contact me.',
+    "Machine learning engineer and full-stack developer. I build backends that think — RAG chatbots, recommendation engines, and analytics systems — and the interfaces that make them usable.",
   keywords:
-    'Biraj Buddhacharya, Software Engineer, AI Engineer, Machine Learning, Deep Learning, PyTorch, Python, Portfolio',
-  authors: [{ name: 'Biraj Buddhacharya' }],
-  robots: 'index, follow',
-  metadataBase: new URL('https://birajbuddhacharya.com.np'),
+    "Biraj Buddhacharya, ML Engineer, Full-stack Developer, Machine Learning, FastAPI, React, PyTorch, LangChain, Portfolio",
+  authors: [{ name: "Biraj Buddhacharya" }],
+  robots: "index, follow",
+  metadataBase: new URL("https://birajbuddhacharya.com.np"),
   verification: {
-    google: 'MfMgvrHxXGqKqKNEvhpvELHqDe7tx5nX-T6quHavP2Q'
-  }
+    google: "MfMgvrHxXGqKqKNEvhpvELHqDe7tx5nX-T6quHavP2Q",
+  },
+  openGraph: {
+    title: "Biraj Buddhacharya | ML Engineer & Full-stack Developer",
+    description:
+      "Machine learning engineer and full-stack developer building backends that think.",
+    url: "https://birajbuddhacharya.com.np",
+    type: "website",
+    images: [{ url: "https://birajbuddhacharya.com.np/img/logo.png" }],
+  },
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Biraj Buddhacharya",
+  url: "https://birajbuddhacharya.com.np",
+  sameAs: [
+    "https://www.linkedin.com/in/biraj-buddhacharya",
+    "https://github.com/birajbuddhacharya",
+  ],
+  jobTitle: "ML Engineer & Full-stack Developer",
+  image: "https://birajbuddhacharya.com.np/img/logo.png",
+  description:
+    "Machine learning engineer and full-stack developer based in Kathmandu, Nepal.",
 };
 
 export default function RootLayout({
@@ -34,40 +64,22 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Biraj Buddhacharya",
-    "url": "https://birajbuddhacharya.com.np",
-    "sameAs": [
-      "https://www.linkedin.com/in/biraj-buddhacharya",
-      "https://github.com/birajbuddhacharya"
-    ],
-    "jobTitle": "Software and AI Engineer",
-    "image": "https://birajbuddhacharya.com.np/img/logo.png",
-    "description": "Biraj Buddhacharya is a Software and AI Engineer passionate about solving real-world problems with Python and machine learning."
-  };
-
   return (
     <html lang="en">
-      <Head>
-        <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
-        </script>
-        <title>Biraj Buddhacharya | Software & AI Engineer</title>
-        <meta name="description" content="Portfolio of Biraj Buddhacharya, a Software and AI Engineer." />
-        <meta name="keywords" content="software engineer, AI, Python, portfolio" />
-        <meta property="og:title" content="Biraj Buddhacharya | Software & AI Engineer" />
-        <meta property="og:description" content="Explore the portfolio of Biraj Buddhacharya, a Software and AI Engineer specializing in Python and machine learning." />
-        <meta property="og:image" content="https://birajbuddhacharya.com.np/img/logo.png" />
-        <meta property="og:url" content="https://birajbuddhacharya.com.np" />
-        <meta property="og:type" content="website" />
-      </Head>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${sora.variable}`}
+        style={{ fontFamily: "var(--font-sora), system-ui, sans-serif" }}
       >
-        {children}
-        <Toaster />
+        <QueryProvider>
+          {children}
+          <Toaster />
+        </QueryProvider>
       </body>
     </html>
   );

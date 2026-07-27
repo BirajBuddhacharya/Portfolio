@@ -1,22 +1,31 @@
-import "./App.css";
-import Home from "../pages/home";
-import About from "../pages/about";
-import Projects from "../pages/projects";
-import Skills from "../pages/skills";
-import Footer from "../pages/footer";
+import { Navbar } from '../components/layout/Navbar';
+import { Footer } from '../components/layout/Footer';
+import { MouseGlow } from '../components/MouseGlow';
+import { HeroSection } from '../components/sections/home/HeroSection';
+import { TickerSection } from '../components/sections/home/TickerSection';
+import { StatsSection } from '../components/sections/home/StatsSection';
+import { FeaturedProjectsSection } from '../components/sections/home/FeaturedProjectsSection';
+import { ExperienceSection } from '../components/sections/home/ExperienceSection';
+import { SkillsSection } from '../components/sections/home/SkillsSection';
+import { BlogPreviewSection } from '../components/sections/home/BlogPreviewSection';
+import { CTASection } from '../components/sections/home/CTASection';
 
-function App() {
+export default function HomePage() {
   return (
-    <>
-      <main className="bg-neutral sm:px-[2rem] lg:px-[10rem] 2xl:px-[20rem] py-[2rem] w-screen font-body flex flex-col gap-48 relative overflow-hidden text-white">
-        <Home />
-        <About />
-        <Projects />
-        <Skills />
-        <Footer />
+    <div style={{ background: '#09090B', color: '#EDEDEF', minHeight: '100vh', overflowX: 'hidden', position: 'relative' }}>
+      <MouseGlow />
+      <Navbar />
+      <main className="relative z-10">
+        <HeroSection />
+        <TickerSection />
+        <StatsSection />
+        <FeaturedProjectsSection />
+        <ExperienceSection />
+        <SkillsSection />
+        <BlogPreviewSection />
+        <CTASection />
       </main>
-    </>
+      <Footer />
+    </div>
   );
 }
-
-export default App;
