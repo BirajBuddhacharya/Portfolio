@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import {
@@ -12,6 +12,9 @@ import {
   PenLine,
   Mail,
   Settings,
+  Plus,
+  Search,
+  X,
   type LucideIcon,
 } from 'lucide-react';
 import {
@@ -228,6 +231,158 @@ function AboutEduCard({ entry, onRemove }: { entry: PoolEntry; onRemove: () => v
   );
 }
 
+// ─── Tag search combobox ─────────────────────────────────────────────────────
+function TagSearch({
+  selectedTags,
+  onAdd,
+}: {
+  selectedTags: string[];
+  onAdd: (tag: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [allTags, setAllTags] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    setLoading(true);
+    fetch('/api/tags')
+      .then((r) => r.json())
+      .then((d: { tags: string[] }) => { setAllTags(d.tags); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, [open]);
+
+  useEffect(() => {
+    if (open) setTimeout(() => inputRef.current?.focus(), 50);
+  }, [open]);
+
+  useEffect(() => {
+    function onDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setOpen(false);
+    }
+    function onClickOutside(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('keydown', onDown);
+    document.addEventListener('mousedown', onClickOutside);
+    return () => {
+      document.removeEventListener('keydown', onDown);
+      document.removeEventListener('mousedown', onClickOutside);
+    };
+  }, []);
+
+  const filtered = allTags.filter(
+    (t) =>
+      !selectedTags.includes(t) &&
+      (query === '' || t.toLowerCase().includes(query.toLowerCase())),
+  );
+
+  return (
+    <div ref={containerRef} className="relative">
+      <button
+        onClick={() => { setOpen((p) => !p); setQuery(''); }}
+        className="flex items-center justify-center w-[22px] h-[22px] rounded-[6px] border cursor-pointer transition-colors duration-150"
+        style={{
+          background: open ? `${ACCENT}20` : 'transparent',
+          borderColor: open ? `${ACCENT}55` : BORDER,
+          color: open ? ACCENT : MUTED,
+        }}
+        title="Add tag"
+      >
+        <Plus size={12} strokeWidth={2.2} />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -6, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.97 }}
+            transition={{ duration: 0.15, ease: [0.2, 0.8, 0.2, 1] }}
+            className="absolute right-0 top-[calc(100%+6px)] z-50 w-[260px] rounded-[14px] border overflow-hidden"
+            style={{ background: '#0F0F12', borderColor: `${ACCENT}30`, boxShadow: `0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px ${ACCENT}18` }}
+          >
+            {/* Search input */}
+            <div
+              className="flex items-center gap-2 px-3 py-[10px] border-b"
+              style={{ borderColor: BORDER }}
+            >
+              <Search size={13} style={{ color: MUTED, flexShrink: 0 }} />
+              <input
+                ref={inputRef}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search tags..."
+                className="flex-1 bg-transparent text-[13px] outline-none placeholder:text-[#3F3F46]"
+                style={{ fontFamily: mono, color: TEXT }}
+              />
+              {query && (
+                <button onClick={() => setQuery('')} style={{ color: MUTED, cursor: 'pointer' }}>
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+
+            {/* Results */}
+            <div className="max-h-[200px] overflow-y-auto py-1">
+              {loading ? (
+                <div className="px-4 py-3 text-[12px]" style={{ fontFamily: mono, color: MUTED }}>
+                  Loading...
+                </div>
+              ) : filtered.length === 0 ? (
+                <div className="px-4 py-3 text-[12px]" style={{ fontFamily: mono, color: MUTED }}>
+                  {query ? 'No matches' : 'All tags added'}
+                </div>
+              ) : (
+                filtered.map((tag) => (
+                  <button
+                    key={tag}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      onAdd(tag);
+                      setQuery('');
+                      setOpen(false);
+                    }}
+                    className="flex items-center w-full px-3 py-[8px] text-[13px] text-left cursor-pointer transition-colors duration-100 gap-2"
+                    style={{ fontFamily: mono, color: TEXT2 }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = `${ACCENT}12`;
+                      (e.currentTarget as HTMLElement).style.color = TEXT;
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.background = 'transparent';
+                      (e.currentTarget as HTMLElement).style.color = TEXT2;
+                    }}
+                  >
+                    <span
+                      className="w-[6px] h-[6px] rounded-full shrink-0"
+                      style={{ background: `${ACCENT}80` }}
+                    />
+                    {tag}
+                  </button>
+                ))
+              )}
+            </div>
+
+            {/* Footer hint */}
+            <div
+              className="px-3 py-[7px] border-t text-[10.5px]"
+              style={{ borderColor: BORDER, fontFamily: mono, color: MUTED }}
+            >
+              ↵ to select · esc to close
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 // ─── Dashboard tab ───────────────────────────────────────────────────────────
 function DashboardTab() {
   const { data: stats = [] } = useAdminOverview();
@@ -275,8 +430,8 @@ function DashboardTab() {
         </div>
       </motion.div>
 
-      {/* Stat cards */}
-      {stats.map((s, i) => (
+      {/* Stat cards — first 2 stacked in col 3 */}
+      {stats.slice(0, 2).map((s, i) => (
         <motion.div
           key={s.label}
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
@@ -297,25 +452,47 @@ function DashboardTab() {
         </motion.div>
       ))}
 
-      {/* Quick actions */}
+      {/* Quick actions — col 4, row-span-2 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.28 }}
-        className="rounded-[16px] p-5 border flex flex-col gap-2"
-        style={{ background: CARD, borderColor: BORDER }}
+        className="row-span-2 rounded-[16px] p-5 border flex flex-col gap-3"
+        style={{
+          background: `rgba(255,107,107,0.07)`,
+          borderColor: `${ACCENT}35`,
+          boxShadow: `0 0 0 1px ${ACCENT}18 inset`,
+        }}
       >
-        <div className="text-[11px] mb-1" style={{ fontFamily: mono, color: MUTED }}>quick actions</div>
-        {[{ label: 'New post', icon: '✎' }, { label: 'New project', icon: '◈' }].map((a) => (
-          <button
-            key={a.label}
-            className="flex items-center gap-2 text-[13px] px-3 py-[7px] rounded-[10px] border w-full text-left transition-colors duration-150 cursor-pointer"
-            style={{ fontFamily: mono, color: TEXT2, background: 'rgba(255,255,255,0.03)', borderColor: BORDER }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${ACCENT}55`; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = BORDER; }}
-          >
-            <span style={{ color: ACCENT }}>{a.icon}</span> {a.label}
-          </button>
-        ))}
+        <div
+          className="text-[10.5px] uppercase tracking-[0.14em]"
+          style={{ fontFamily: mono, color: ACCENT }}
+        >
+          Quick Actions
+        </div>
+        <div className="flex flex-col gap-2 flex-1">
+          {[{ label: '+ New post' }, { label: '+ New project' }].map((a) => (
+            <button
+              key={a.label}
+              className="flex items-center text-[13px] px-4 py-[10px] rounded-[10px] border w-full text-left transition-colors duration-150 cursor-pointer"
+              style={{
+                fontFamily: mono,
+                color: TEXT,
+                background: 'rgba(0,0,0,0.35)',
+                borderColor: 'rgba(255,255,255,0.08)',
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = `${ACCENT}50`;
+                (e.currentTarget as HTMLElement).style.color = ACCENT;
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
+                (e.currentTarget as HTMLElement).style.color = TEXT;
+              }}
+            >
+              {a.label}
+            </button>
+          ))}
+        </div>
       </motion.div>
 
       {/* Top pages — 2 cols × 1 row */}
@@ -525,10 +702,9 @@ function EditorTab() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const tags = placeholder.admin.editorTags;
 
-  const toggleTag = (t: string) =>
-    setSelectedTags((prev) => prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]);
+  const addTag = (t: string) => setSelectedTags((prev) => prev.includes(t) ? prev : [...prev, t]);
+  const removeTag = (t: string) => setSelectedTags((prev) => prev.filter((x) => x !== t));
 
   const inputStyle = {
     background: '#131317',
@@ -609,27 +785,50 @@ function EditorTab() {
 
         {/* Tags */}
         <div className="rounded-[14px] border p-4" style={{ background: CARD, borderColor: BORDER }}>
-          <SectionLabel>tags</SectionLabel>
-          <div className="flex flex-wrap gap-2">
-            {tags.map((t) => {
-              const active = selectedTags.includes(t);
-              return (
-                <button
+          <div className="flex items-center justify-between mb-3">
+            <div
+              className="text-[10.5px] uppercase tracking-[0.14em]"
+              style={{ fontFamily: mono, color: MUTED }}
+            >
+              Tags
+            </div>
+            <TagSearch selectedTags={selectedTags} onAdd={addTag} />
+          </div>
+
+          {selectedTags.length === 0 ? (
+            <div
+              className="text-[11.5px] py-2"
+              style={{ fontFamily: mono, color: MUTED }}
+            >
+              No tags — click + to add
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-[6px]">
+              {selectedTags.map((t) => (
+                <span
                   key={t}
-                  onClick={() => toggleTag(t)}
-                  className="text-[11px] px-[10px] py-[5px] rounded-full border cursor-pointer transition-all duration-150"
+                  className="inline-flex items-center gap-1 text-[11px] px-[9px] py-[4px] rounded-full border"
                   style={{
                     fontFamily: mono,
-                    color: active ? ACCENT : MUTED,
-                    borderColor: active ? `${ACCENT}44` : BORDER,
-                    background: active ? `${ACCENT}10` : 'transparent',
+                    color: ACCENT,
+                    borderColor: `${ACCENT}44`,
+                    background: `${ACCENT}10`,
                   }}
                 >
                   {t}
-                </button>
-              );
-            })}
-          </div>
+                  <button
+                    onClick={() => removeTag(t)}
+                    className="cursor-pointer transition-opacity duration-100 leading-none"
+                    style={{ color: `${ACCENT}99` }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = ACCENT; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = `${ACCENT}99`; }}
+                  >
+                    <X size={10} strokeWidth={2.5} />
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
       </div>
