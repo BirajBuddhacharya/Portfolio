@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Navbar } from '../../components/layout/Navbar';
 import { Footer } from '../../components/layout/Footer';
-import { useAbout, useAboutEducation, useAboutFacts } from '../../services/aboutService';
+import { useAbout, useAboutEducation, useAboutFacts, useAboutProfile } from '../../services/aboutService';
 
 const reveal = {
   initial: { opacity: 0, y: 26 },
@@ -13,6 +13,7 @@ const reveal = {
 };
 
 export default function AboutPage() {
+  const { data: profile } = useAboutProfile();
   const { data: paragraphs = [] } = useAbout();
   const { data: education = [] } = useAboutEducation();
   const { data: facts = [] } = useAboutFacts();
@@ -40,7 +41,7 @@ export default function AboutPage() {
               margin: '0 0 46px',
             }}
           >
-            ML engineer with a full-stack habit<span style={{ color: '#FF6B6B' }}>.</span>
+            {profile?.headline}<span style={{ color: '#FF6B6B' }}>.</span>
           </h1>
         </motion.div>
 
@@ -61,14 +62,23 @@ export default function AboutPage() {
             {...reveal}
             transition={{ ...(reveal.transition as object), delay: 0.15 }}
             className="relative"
-            style={{ aspectRatio: '4/5', borderRadius: 20, border: '1px solid rgba(255,255,255,0.1)', background: 'linear-gradient(135deg,#141418,#0C0C0F)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            style={{ aspectRatio: '4/5', borderRadius: 20, border: '1px solid rgba(255,255,255,0.1)', background: 'linear-gradient(135deg,#141418,#0C0C0F)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
           >
-            <span
-              className="text-[11px] uppercase tracking-[0.16em]"
-              style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', color: '#3F3F46' }}
-            >
-              portrait
-            </span>
+            {profile?.coverImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={profile.coverImage}
+                alt="Portrait"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            ) : (
+              <span
+                className="text-[11px] uppercase tracking-[0.16em]"
+                style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', color: '#3F3F46' }}
+              >
+                portrait
+              </span>
+            )}
             <span
               className="absolute"
               style={{ inset: '14px -14px -14px 14px', border: '1px solid rgba(255,107,107,0.5)', borderRadius: 20, zIndex: -1 }}

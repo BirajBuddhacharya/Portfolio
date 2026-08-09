@@ -48,7 +48,7 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
               <span>·</span>
               <span>{post.readTime}</span>
               <span>·</span>
-              <span style={{ color: '#FF6B6B' }}>{post.tag}</span>
+              <span style={{ color: '#FF6B6B' }}>{post.tags.join(', ')}</span>
             </div>
 
             <h1
@@ -67,15 +67,24 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
             </h1>
 
             <div
-              className="h-[300px] rounded-[18px] border border-white/[0.09] flex items-center justify-center mb-[44px]"
+              className="h-[300px] rounded-[18px] border border-white/[0.09] flex items-center justify-center mb-[44px] overflow-hidden"
               style={{ background: 'linear-gradient(135deg,#141418,#0C0C0F)' }}
             >
-              <span
-                className="text-[11px] uppercase tracking-[0.16em]"
-                style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', color: '#3F3F46' }}
-              >
-                cover image
-              </span>
+              {post.coverImage ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={post.coverImage}
+                  alt={post.title}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              ) : (
+                <span
+                  className="text-[11px] uppercase tracking-[0.16em]"
+                  style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', color: '#3F3F46' }}
+                >
+                  cover image
+                </span>
+              )}
             </div>
 
             {post.body.map((paragraph, i) => (

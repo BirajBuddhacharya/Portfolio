@@ -7,7 +7,26 @@ import { placeholder } from '../data/placeholder';
 export const useAdminOverview = () =>
   useQuery({
     queryKey: [QueryKeys.ADMIN_OVERVIEW],
-    queryFn: async () => placeholder.admin.overviewStats,
+    queryFn: async () => {
+      const { blogPosts, allProjects, admin } = placeholder;
+      return [
+        {
+          label: 'Total posts',
+          value: String(blogPosts.length),
+          delta: `${blogPosts.filter((p) => p.status === 'published').length} published`,
+        },
+        {
+          label: 'Projects',
+          value: String(allProjects.length),
+          delta: `${allProjects.filter((p) => p.status === 'live').length} live`,
+        },
+        {
+          label: 'Messages',
+          value: String(admin.inbox.length),
+          delta: `${admin.inbox.filter((m) => !m.read).length} unread`,
+        },
+      ];
+    },
   });
 
 export const useAdminChart = () =>
@@ -37,13 +56,25 @@ export const useAdminInbox = () =>
 export const useAdminProjects = () =>
   useQuery({
     queryKey: [QueryKeys.ADMIN_PROJECTS],
-    queryFn: async () => placeholder.admin.adminProjects,
+    queryFn: async () =>
+      placeholder.allProjects.map((p) => ({
+        title: p.title,
+        kind: p.kind,
+        year: p.year,
+        status: p.status,
+      })),
   });
 
 export const useAdminPosts = () =>
   useQuery({
     queryKey: [QueryKeys.ADMIN_POSTS],
-    queryFn: async () => placeholder.admin.adminPosts,
+    queryFn: async () =>
+      placeholder.blogPosts.map((p) => ({
+        title: p.title,
+        tags: p.tags,
+        date: p.date,
+        status: p.status,
+      })),
   });
 
 export const useAdminAbout = () =>
@@ -55,11 +86,5 @@ export const useAdminAbout = () =>
 export const useAdminResume = () =>
   useQuery({
     queryKey: [QueryKeys.ADMIN_RESUME],
-    queryFn: async () => placeholder.admin.adminResume,
-  });
-
-export const useResumePool = () =>
-  useQuery({
-    queryKey: [QueryKeys.RESUME_POOL],
-    queryFn: async () => placeholder.resumePool,
+    queryFn: async () => placeholder.resume,
   });

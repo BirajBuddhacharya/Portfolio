@@ -10,15 +10,15 @@ import { useContactLinks, useSubmitContact } from '../../services/contactService
 export default function ContactPage() {
   const { data: links = [] } = useContactLinks();
   const { mutate: submit, isPending } = useSubmitContact();
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.message) return;
+    if (!form.name || !form.email || !form.subject || !form.message) return;
     submit(form, {
       onSuccess: () => {
         toast.success('Message sent! I\'ll get back to you soon.');
-        setForm({ name: '', email: '', message: '' });
+        setForm({ name: '', email: '', subject: '', message: '' });
       },
       onError: () => {
         toast.error('Something went wrong. Please try again.');
@@ -148,6 +148,23 @@ export default function ContactPage() {
                 placeholder="you@company.com"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
+                style={inputStyle}
+                onFocus={(e) => { (e.target as HTMLInputElement).style.borderColor = '#FF6B6B'; }}
+                onBlur={(e) => { (e.target as HTMLInputElement).style.borderColor = 'rgba(255,255,255,0.1)'; }}
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label
+                className="text-[11px] uppercase tracking-[0.1em]"
+                style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', color: '#8A8A93' }}
+              >
+                Subject
+              </label>
+              <input
+                placeholder="What is this about?"
+                value={form.subject}
+                onChange={(e) => setForm({ ...form, subject: e.target.value })}
                 style={inputStyle}
                 onFocus={(e) => { (e.target as HTMLInputElement).style.borderColor = '#FF6B6B'; }}
                 onBlur={(e) => { (e.target as HTMLInputElement).style.borderColor = 'rgba(255,255,255,0.1)'; }}

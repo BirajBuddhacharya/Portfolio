@@ -12,9 +12,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(500).json({ error: "Server configuration error" });
     }
 
-    const { message, email } = req.body; 
-    if (!message || !email) {
-        return res.status(400).json({ error: "Message and email are required" });
+    const { message, email, subject, name } = req.body;
+    if (!message || !email || !subject) {
+        return res.status(400).json({ error: "Message, email and subject are required" });
     }
     // configuring message
     const formattedMessage = message.replace(/\n/g, '<br>');
@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await resend.emails.send({
             from: 'WebsiteContact@resend.dev',
             to: CONTACT_EMAIL,
-            subject: `Message from ${email}`,
+            subject: `${subject} — from ${name || email}`,
             html: formattedMessage,
         }); 
 

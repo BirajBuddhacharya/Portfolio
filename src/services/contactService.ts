@@ -5,6 +5,7 @@ import { placeholder } from '../data/placeholder';
 export interface ContactFormData {
   name: string;
   email: string;
+  subject: string;
   message: string;
 }
 

@@ -5,7 +5,7 @@ import { placeholder } from '../data/placeholder';
 export const useProjects = () =>
   useQuery({
     queryKey: [QueryKeys.PROJECTS_LIST],
-    queryFn: async () => placeholder.allProjects,
+    queryFn: async () => placeholder.allProjects.filter((p) => p.status === 'live'),
   });
 
 export const useProjectDetail = (id: string) =>

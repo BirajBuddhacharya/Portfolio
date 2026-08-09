@@ -17,7 +17,7 @@ export const useHomeTicker = () =>
 export const useHomeFeaturedProjects = () =>
   useQuery({
     queryKey: [QueryKeys.HOME_FEATURED_PROJECTS],
-    queryFn: async () => placeholder.featuredProjects,
+    queryFn: async () => placeholder.allProjects.filter((p) => p.status === 'live').slice(0, 3),
   });
 
 export const useHomeExperience = () =>
@@ -29,11 +29,13 @@ export const useHomeExperience = () =>
 export const useHomeSkills = () =>
   useQuery({
     queryKey: [QueryKeys.HOME_SKILLS],
-    queryFn: async () => placeholder.skillGroups,
+    queryFn: async () =>
+      placeholder.resume.skills.map((s) => ({ name: s.title, items: s.body.split(', ') })),
   });
 
 export const useHomeBlogPreview = () =>
   useQuery({
     queryKey: [QueryKeys.HOME_BLOG_PREVIEW],
-    queryFn: async () => placeholder.blogPreviews,
+    queryFn: async () =>
+      placeholder.blogPosts.filter((p) => p.status === 'published').slice(0, 3),
   });

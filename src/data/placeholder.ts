@@ -21,39 +21,6 @@ export const placeholder = {
     "scikit-learn",
   ],
 
-  featuredProjects: [
-    {
-      id: "riskvision",
-      title: "RiskVision",
-      blurb:
-        "Predictive ML model with 80%+ accuracy for assessing stroke and heart disease risk from clinical data.",
-      stack: ["Python", "PyTorch", "FastAPI", "React"],
-      year: "2024",
-      coverColor: "#141418",
-      coverAccent: "#FF6B6B",
-    },
-    {
-      id: "syncbeats",
-      title: "SyncBeats",
-      blurb:
-        "CLI tool that syncs YouTube playlists and local music libraries using yt-dlp with smart deduplication.",
-      stack: ["Python", "yt-dlp", "Click", "SQLite"],
-      year: "2023",
-      coverColor: "#0E1418",
-      coverAccent: "#6E6E78",
-    },
-    {
-      id: "abcbooks",
-      title: "ABC Books",
-      blurb:
-        "Full-stack e-commerce platform with responsive design, cart system, and streamlined checkout flow.",
-      stack: ["Django", "React", "PostgreSQL", "Tailwind"],
-      year: "2023",
-      coverColor: "#130E18",
-      coverAccent: "#7C3AED",
-    },
-  ],
-
   experience: [
     {
       period: "2023 — present",
@@ -79,35 +46,6 @@ export const placeholder = {
     },
   ],
 
-  skillGroups: [
-    {
-      name: "ML / AI",
-      items: ["PyTorch", "TensorFlow", "scikit-learn", "LangChain", "LangGraph", "RAG", "HuggingFace"],
-    },
-    {
-      name: "Backend",
-      items: ["Python", "FastAPI", "Django", "Node.js", "REST APIs", "GraphQL"],
-    },
-    {
-      name: "Frontend",
-      items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    },
-    {
-      name: "Databases",
-      items: ["PostgreSQL", "MongoDB", "Redis", "Elasticsearch", "SQLite"],
-    },
-    {
-      name: "DevOps",
-      items: ["Docker", "GitHub Actions", "Linux", "AWS", "Nginx"],
-    },
-  ],
-
-  blogPreviews: [
-    { date: "Jun 2025", title: "Building a production RAG chatbot with LangChain and pgvector", readTime: "8 min" },
-    { date: "Apr 2025", title: "Why FastAPI + PostgreSQL is my default backend stack", readTime: "5 min" },
-    { date: "Feb 2025", title: "From Jupyter Notebook to a deployed ML service in one afternoon", readTime: "6 min" },
-  ],
-
   allProjects: [
     {
       id: "riskvision",
@@ -119,6 +57,8 @@ export const placeholder = {
       kind: "ML",
       coverHeight: 260,
       coverAccent: "#FF6B6B",
+      coverColor: "#141418",
+      status: "live",
       live: "https://github.com/BirajBuddhacharya/RiskVision",
       repo: "https://github.com/BirajBuddhacharya/RiskVision",
       summary:
@@ -154,6 +94,8 @@ export const placeholder = {
       kind: "CLI tool",
       coverHeight: 160,
       coverAccent: "#6E6E78",
+      coverColor: "#0E1418",
+      status: "live",
       live: "https://github.com/BirajBuddhacharya/SyncBeats",
       repo: "https://github.com/BirajBuddhacharya/SyncBeats",
       summary:
@@ -189,6 +131,8 @@ export const placeholder = {
       kind: "Web app",
       coverHeight: 200,
       coverAccent: "#7C3AED",
+      coverColor: "#130E18",
+      status: "live",
       live: "https://github.com/BirajBuddhacharya/ABC-Books",
       repo: "https://github.com/BirajBuddhacharya/ABC-Books",
       summary:
@@ -224,6 +168,8 @@ export const placeholder = {
       kind: "Web app",
       coverHeight: 300,
       coverAccent: "#0EA5E9",
+      coverColor: "#0C1418",
+      status: "live",
       live: "#",
       repo: "#",
       summary:
@@ -259,6 +205,8 @@ export const placeholder = {
       kind: "AI product",
       coverHeight: 220,
       coverAccent: "#10B981",
+      coverColor: "#0E1814",
+      status: "live",
       live: "#",
       repo: "#",
       summary:
@@ -294,6 +242,8 @@ export const placeholder = {
       kind: "Web app",
       coverHeight: 180,
       coverAccent: "#F59E0B",
+      coverColor: "#18140E",
+      status: "archived",
       live: "#",
       repo: "#",
       summary:
@@ -329,7 +279,9 @@ export const placeholder = {
         "How I wired up a retrieval-augmented generation pipeline, what broke in production, and the three changes that made it actually reliable.",
       date: "Jun 2025",
       readTime: "8 min",
-      tag: "ML",
+      tags: ["ML", "RAG", "LangChain"],
+      status: "published",
+      coverImage: "",
       body: [
         "Retrieval-augmented generation sounds simple on paper: embed your docs, store them in a vector DB, retrieve the top-k at query time, pass them as context to an LLM. In practice, the devil is in every single one of those steps.",
         "The first thing I learned the hard way is that chunking strategy matters more than model choice. I started with fixed 512-token chunks and got terrible results on questions that spanned section boundaries. Switching to a sliding window with 10% overlap and semantic sentence splitting (using spaCy) bumped retrieval recall from ~60% to ~82% on my eval set.",
@@ -345,7 +297,9 @@ export const placeholder = {
         "After building backends in Django, Flask, Express, and Go, I keep coming back to the same combination. Here's why.",
       date: "Apr 2025",
       readTime: "5 min",
-      tag: "Backend",
+      tags: ["Backend", "FastAPI", "PostgreSQL"],
+      status: "published",
+      coverImage: "",
       body: [
         "I've built production backends in Django, Flask, Express, Go's net/http, and FastAPI. After shipping roughly a dozen services, I keep landing on FastAPI + PostgreSQL as my default. This post explains my reasoning.",
         "FastAPI gives you automatic OpenAPI docs, Pydantic validation, and async support out of the box. The docs alone save hours when handing off an API to a frontend developer. Pydantic v2 is fast enough that validation is never a bottleneck.",
@@ -361,7 +315,9 @@ export const placeholder = {
         "A step-by-step walkthrough of packaging a trained model into a FastAPI service and deploying it on a single VPS.",
       date: "Feb 2025",
       readTime: "6 min",
-      tag: "ML",
+      tags: ["ML", "Docker", "Tutorial"],
+      status: "published",
+      coverImage: "",
       body: [
         "Most ML tutorials end with a trained model sitting in a notebook. This post covers the last mile: turning that notebook into a deployed service that people can actually call.",
         "Step one is saving the model properly. For scikit-learn models I use joblib; for PyTorch I save the state dict, not the whole model. Saving the full model object breaks when you refactor classes.",
@@ -377,7 +333,9 @@ export const placeholder = {
         "What events actually are, when they help, when they hurt, and a concrete example using Redis Streams.",
       date: "Dec 2024",
       readTime: "7 min",
-      tag: "Backend",
+      tags: ["Backend", "Redis"],
+      status: "published",
+      coverImage: "",
       body: [
         "Event-driven architecture is one of those phrases that gets used in the same breath as microservices and Kubernetes, which makes it sound scarier than it is. At its core, it's just: when something happens, publish a message; somewhere else, subscribe to it and react.",
         "The canonical example is an order being placed. Instead of synchronously calling the inventory service, the email service, and the analytics service from your order handler, you publish an `order.placed` event and each service handles it independently.",
@@ -393,7 +351,9 @@ export const placeholder = {
         "Pricing, scope, communication, and the two habits that made the biggest difference to my sanity.",
       date: "Oct 2024",
       readTime: "4 min",
-      tag: "Career",
+      tags: ["Career", "Opinion"],
+      status: "published",
+      coverImage: "",
       body: [
         "I've been freelancing on the side since my second year at university. Here are the mistakes I made early and what I'd tell myself in 2022.",
         "Mistake one: fixed-price projects without a detailed spec. Every project where I said 'I'll build this for X' without a written spec turned into a scope-creep nightmare. Now I charge hourly for discovery, write a spec with the client, then quote fixed-price from that spec.",
@@ -404,73 +364,13 @@ export const placeholder = {
     },
   ],
 
-  resumePool: {
-    experience: [
-      {
-        id: 'exp-dallotech',
-        title: 'ML Engineer & Full-stack Developer',
-        period: '2023 — present',
-        organization: 'DalloTech',
-        body: 'Core AI R&D on Tathyanaka analytics platform. Built ERP for Jeevan Vigyan. REST API design and backend engineering.',
-      },
-      {
-        id: 'exp-freelance',
-        title: 'Freelance Developer',
-        period: '2022 — 2023',
-        organization: 'Self-employed',
-        body: 'Event management platform, restaurant ordering system, and ML prototypes for 3 clients.',
-      },
-    ],
-    education: [
-      {
-        id: 'edu-bsc',
-        title: 'BSc IT (Hons) — Software Engineering',
-        period: '2021 — present',
-        organization: 'Techspire College / Asia Pacific University',
-        body: 'Specialisation in software engineering and machine learning. Final year project: LLM-powered code review assistant.',
-      },
-      {
-        id: 'edu-tensorflow',
-        title: 'TensorFlow Developer Certificate',
-        period: '2023',
-        organization: 'Google — Coursera',
-        body: 'Official TensorFlow certification covering computer vision, NLP, and time-series with Keras.',
-      },
-      {
-        id: 'edu-aws',
-        title: 'AWS Cloud Practitioner',
-        period: '2022',
-        organization: 'Amazon Web Services',
-        body: 'Foundational AWS certification covering core services, pricing, and architecture best practices.',
-      },
-    ],
-  },
-
   about: {
     headline: "ML engineer with a full-stack habit",
     coverImage: "",
-    selectedEducationIds: ['edu-bsc', 'edu-tensorflow', 'edu-aws'],
     paragraphs: [
       "I started in machine learning — intent recognition, recommendation systems, sound classification — and kept drifting toward the plumbing behind it. Today I spend most of my time on backend systems: APIs, data pipelines, and the analytics layers that turn raw tables into something a person can act on.",
       "At DalloTech I work on a full ERP for Jeevan Vigyan and on Tathyanaka, an analytics product where I sit on the core AI R&D team. Outside of that I take on freelance builds — event platforms, ordering systems — usually the ones with an interesting retrieval or recommendation problem hiding inside.",
       "Based in Tripureshwor, Kathmandu. Currently finishing a BSc IT (Hons) at Techspire College / Asia Pacific University.",
-    ],
-    education: [
-      {
-        period: "2021 — present",
-        title: "BSc IT (Hons) — Software Engineering",
-        place: "Techspire College / Asia Pacific University",
-      },
-      {
-        period: "2023",
-        title: "TensorFlow Developer Certificate",
-        place: "Google — Coursera",
-      },
-      {
-        period: "2022",
-        title: "AWS Cloud Practitioner",
-        place: "Amazon Web Services",
-      },
     ],
     facts: [
       { k: "location", v: "Tripureshwor, Kathmandu" },
@@ -480,68 +380,51 @@ export const placeholder = {
     ],
   },
 
-  resume: [
-    {
-      label: "Experience",
-      rows: [
-        {
-          title: "ML Engineer & Full-stack Developer",
-          meta: "DalloTech · 2023 — present",
-          body: "Core AI R&D on Tathyanaka analytics platform. Built ERP for Jeevan Vigyan. REST API design and backend engineering.",
-        },
-        {
-          title: "Freelance Developer",
-          meta: "Self-employed · 2022 — 2023",
-          body: "Event management platform, restaurant ordering system, and ML prototypes for 3 clients.",
-        },
-      ],
-    },
-    {
-      label: "Education",
-      rows: [
-        {
-          title: "BSc IT (Hons) — Software Engineering",
-          meta: "Techspire / APU · 2021 — present",
-          body: "Specialisation in software engineering and machine learning. Final year project: LLM-powered code review assistant.",
-        },
-      ],
-    },
-    {
-      label: "Certifications",
-      rows: [
-        {
-          title: "TensorFlow Developer Certificate",
-          meta: "Google · 2023",
-          body: "Official TensorFlow certification covering computer vision, NLP, and time-series with Keras.",
-        },
-        {
-          title: "AWS Cloud Practitioner",
-          meta: "AWS · 2022",
-          body: "Foundational AWS certification covering core services, pricing, and architecture best practices.",
-        },
-      ],
-    },
-    {
-      label: "Skills",
-      rows: [
-        {
-          title: "ML / AI",
-          meta: "",
-          body: "PyTorch, TensorFlow, scikit-learn, LangChain, LangGraph, RAG, HuggingFace Transformers",
-        },
-        {
-          title: "Backend",
-          meta: "",
-          body: "Python, FastAPI, Django, Node.js, REST APIs, PostgreSQL, Redis, MongoDB",
-        },
-        {
-          title: "Frontend & Infra",
-          meta: "",
-          body: "React, Next.js, TypeScript, Tailwind CSS, Docker, GitHub Actions, Linux, AWS",
-        },
-      ],
-    },
-  ],
+  // single source for the résumé — the public /resume page groups these into blocks,
+  // the about page derives its "education & certifications" list from them
+  resume: {
+    experiences: [
+      {
+        title: "ML Engineer & Full-stack Developer",
+        period: "2023 — present",
+        organization: "DalloTech",
+        body: "Core AI R&D on Tathyanaka analytics platform. Built ERP for Jeevan Vigyan. REST API design and backend engineering.",
+      },
+      {
+        title: "Freelance Developer",
+        period: "2022 — 2023",
+        organization: "Self-employed",
+        body: "Event management platform, restaurant ordering system, and ML prototypes for 3 clients.",
+      },
+    ],
+    education: [
+      {
+        title: "BSc IT (Hons) — Software Engineering",
+        period: "2021 — present",
+        organization: "Techspire College / Asia Pacific University",
+        body: "Specialisation in software engineering and machine learning. Final year project: LLM-powered code review assistant.",
+      },
+    ],
+    certifications: [
+      {
+        title: "TensorFlow Developer Certificate",
+        period: "2023",
+        organization: "Google — Coursera",
+        body: "Official TensorFlow certification covering computer vision, NLP, and time-series with Keras.",
+      },
+      {
+        title: "AWS Cloud Practitioner",
+        period: "2022",
+        organization: "Amazon Web Services",
+        body: "Foundational AWS certification covering core services, pricing, and architecture best practices.",
+      },
+    ],
+    skills: [
+      { title: "ML / AI", body: "PyTorch, TensorFlow, scikit-learn, LangChain, LangGraph, RAG, HuggingFace Transformers" },
+      { title: "Backend", body: "Python, FastAPI, Django, Node.js, REST APIs, PostgreSQL, Redis, MongoDB" },
+      { title: "Frontend & Infra", body: "React, Next.js, TypeScript, Tailwind CSS, Docker, GitHub Actions, Linux, AWS" },
+    ],
+  },
 
   contactLinks: [
     { label: "Email", value: "birajbuddhacharya@gmail.com", href: "mailto:birajbuddhacharya@gmail.com" },
@@ -551,11 +434,6 @@ export const placeholder = {
   ],
 
   admin: {
-    overviewStats: [
-      { label: "Total posts", value: "5", delta: "+1 this month" },
-      { label: "Projects", value: "6", delta: "+2 this year" },
-      { label: "Messages", value: "12", delta: "3 unread" },
-    ],
     chartBars: [
       18, 32, 27, 41, 55, 38, 29, 62, 48, 71, 54, 39, 66, 80,
     ],
@@ -604,63 +482,6 @@ export const placeholder = {
         time: "3d", read: true,
       },
     ],
-    adminProjects: [
-      { title: "RiskVision", kind: "ML", year: "2024", status: "live" },
-      { title: "SyncBeats", kind: "CLI", year: "2023", status: "live" },
-      { title: "ABC Books", kind: "Web app", year: "2023", status: "live" },
-      { title: "EventPulse", kind: "Web app", year: "2023", status: "live" },
-      { title: "Tathyanaka", kind: "AI product", year: "2024", status: "live" },
-      { title: "QuickHire", kind: "Web app", year: "2022", status: "archived" },
-    ],
-    adminPosts: [
-      { title: "Building a production RAG chatbot with LangChain and pgvector", tag: "ML", date: "Jun 2025", status: "published" },
-      { title: "Why FastAPI + PostgreSQL is my default backend stack", tag: "Backend", date: "Apr 2025", status: "published" },
-      { title: "From Jupyter Notebook to a deployed ML service in one afternoon", tag: "ML", date: "Feb 2025", status: "published" },
-      { title: "Event-driven architecture for beginners, without the hype", tag: "Backend", date: "Dec 2024", status: "published" },
-      { title: "Three years of freelancing: what I got wrong first", tag: "Career", date: "Oct 2024", status: "published" },
-    ],
-    editorTags: ["ML", "Backend", "Frontend", "Data", "Career"],
-    adminResume: {
-      experiences: [
-        {
-          title: 'ML Engineer & Full-stack Developer',
-          period: '2023 — present',
-          organization: 'DalloTech',
-          body: 'Core AI R&D on Tathyanaka analytics platform. Built ERP for Jeevan Vigyan. REST API design and backend engineering.',
-        },
-        {
-          title: 'Freelance Developer',
-          period: '2022 — 2023',
-          organization: 'Self-employed',
-          body: 'Event management platform, restaurant ordering system, and ML prototypes for 3 clients.',
-        },
-      ],
-      educationEntries: [
-        {
-          title: 'BSc IT (Hons) — Software Engineering',
-          period: '2021 — present',
-          organization: 'Techspire College / Asia Pacific University',
-          body: 'Specialisation in software engineering and machine learning. Final year project: LLM-powered code review assistant.',
-        },
-      ],
-      certifications: [
-        {
-          title: 'TensorFlow Developer Certificate',
-          meta: 'Google · 2023',
-          body: 'Official TensorFlow certification covering computer vision, NLP, and time-series with Keras.',
-        },
-        {
-          title: 'AWS Cloud Practitioner',
-          meta: 'AWS · 2022',
-          body: 'Foundational AWS certification covering core services, pricing, and architecture best practices.',
-        },
-      ],
-      skills: [
-        { title: 'ML / AI', body: 'PyTorch, TensorFlow, scikit-learn, LangChain, LangGraph, RAG, HuggingFace Transformers' },
-        { title: 'Backend', body: 'Python, FastAPI, Django, Node.js, REST APIs, PostgreSQL, Redis, MongoDB' },
-        { title: 'Frontend & Infra', body: 'React, Next.js, TypeScript, Tailwind CSS, Docker, GitHub Actions, Linux, AWS' },
-      ],
-    },
     settingsFields: [
       { label: "Display name", value: "Biraj Buddhacharya" },
       { label: "Email", value: "birajbuddhacharya@gmail.com" },

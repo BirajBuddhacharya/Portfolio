@@ -26,9 +26,19 @@ The files in `src/pages/` (about.tsx, home.tsx, etc.) are **legacy leftovers** f
 
 ### Data Layer
 
-All page data comes from a single in-memory object at `src/data/placeholder.ts`. There are no real HTTP calls to any backend. Each `src/services/*.ts` file exports a React Query hook whose `queryFn` reads from `placeholder.*`. The intended future REST endpoints are enumerated in `src/lib/apiUrls.ts` but are not wired up yet.
+Most page data still comes from a single in-memory object at `src/data/placeholder.ts` — each `src/services/*.ts` file exports a React Query hook whose `queryFn` reads from `placeholder.*`. Endpoint paths are enumerated in `src/lib/apiUrls.ts`; only auth (`src/services/authService.ts`) is wired to a real backend so far.
 
-To add real data: replace `placeholder.X` in a service's `queryFn` with `axios.get(ApiUrls.X)`.
+To add real data: replace `placeholder.X` in a service's `queryFn` with `api.get(ApiUrls.X)`.
+
+#### HTTP: always use the shared axios instance
+
+`src/lib/apiClient.ts` exports `api`, the **only** HTTP client in the app. Never call `axios.get`/`axios.post` on the bare axios import and never use `fetch` — new service code goes through `api` so it inherits auth, error toasts and the 401/403 redirect. For local Next API routes (`/api/*`) pass `{ baseURL: '' }` to skip the backend base URL.
+
+- `baseURL` comes from `NEXT_PUBLIC_API_BASE_URL`.
+- **Request interceptor** attaches `Authorization: Bearer <token>` from the `admin_token` cookie (`src/lib/authToken.ts`).
+- **Response interceptor**: on `401`/`403` it clears the token and hard-redirects to `/admin/login`; every error (any status, plus network failures) fires a `toast.error(...)` via **sonner**. Components therefore must not render their own error banners for API failures — the toast is the single error surface. `<Toaster />` is mounted once in `src/app/layout.tsx`.
+- `apiErrorMessage(error)` unwraps the backend's `{ message }` (string or string[]) and is what the interceptor toasts.
+- Backend payloads are wrapped: `ApiResponse<T> = { data: T; message?: string }`.
 
 **React Query v5** (`@tanstack/react-query`) is the sole data/state layer — no Redux or Zustand. The `QueryProvider` (`src/providers/QueryProvider.tsx`) sets 60s stale time, 1 retry.
 
@@ -66,10 +76,12 @@ RESEND_API_KEY=<Resend API key>
 CONTACT_EMAIL=<destination email address>
 ```
 
-Note: the contact form UI (`useSubmitContact` in `src/services/contactService.ts`) currently uses a fake `setTimeout` and does not call `/api/contact`. To wire it up, replace the mock with `axios.post('/api/contact', data)`.
+`NEXT_PUBLIC_API_BASE_URL=<backend base URL>` is required for anything going through `api` (auth today, all services later).
+
+Note: the contact form UI (`useSubmitContact` in `src/services/contactService.ts`) currently uses a fake `setTimeout` and does not call `/api/contact`. To wire it up, replace the mock with `api.post('/api/contact', data, { baseURL: '' })`.
 
 ### Known Quirks
 
-- **Admin page** (`/admin`) has no authentication — it is publicly accessible and UI-only (all data is placeholder).
+- **Admin auth** is gated server-side by `src/middleware.ts`: it runs on `/admin` and everything under it except `/admin/login`, and redirects to the login page when the `admin_token` cookie is missing or its JWT `exp` has passed (fails closed on unparseable tokens). The backend still validates the JWT on every call — the middleware is only the gate. Admin *content* is still placeholder data.
 - **`next-sitemap`** is installed but has no config file; sitemap generation is not active.
 - The contact API route lives in `src/pages/api/` (Pages Router), not `src/app/api/`. Keep new API routes there or migrate both to App Router.

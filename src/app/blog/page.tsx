@@ -52,15 +52,24 @@ export default function BlogPage() {
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.09)'; }}
             >
               <div
-                className="min-h-[280px] flex items-center justify-center"
+                className="min-h-[280px] flex items-center justify-center overflow-hidden"
                 style={{ background: 'linear-gradient(135deg,#17171C,#0C0C0F)' }}
               >
-                <span
-                  className="text-[11px] uppercase tracking-[0.16em]"
-                  style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', color: '#3F3F46' }}
-                >
-                  cover image
-                </span>
+                {featured.coverImage ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={featured.coverImage}
+                    alt={featured.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <span
+                    className="text-[11px] uppercase tracking-[0.16em]"
+                    style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', color: '#3F3F46' }}
+                  >
+                    cover image
+                  </span>
+                )}
               </div>
               <div
                 className="p-[40px] flex flex-col justify-center"
@@ -97,7 +106,7 @@ export default function BlogPage() {
                   <span>·</span>
                   <span>{featured.readTime}</span>
                   <span>·</span>
-                  <span>{featured.tag}</span>
+                  <span>{featured.tags.join(', ')}</span>
                 </div>
               </div>
             </Link>
@@ -116,7 +125,7 @@ export default function BlogPage() {
               <Link
                 href={`/blog/${p.id}`}
                 className="grid items-center gap-6 py-6 px-3 border-b border-white/[0.08] transition-colors duration-200"
-                style={{ gridTemplateColumns: '110px 1fr 130px auto', color: 'inherit' }}
+                style={{ gridTemplateColumns: '110px 1fr minmax(130px, auto) auto', color: 'inherit' }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)'; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
               >
@@ -132,15 +141,20 @@ export default function BlogPage() {
                 >
                   {p.title}
                 </span>
-                <span
-                  className="text-[11px] border border-[rgba(255,107,107,0.25)] px-[10px] py-1 rounded-full justify-self-start"
-                  style={{
-                    fontFamily: 'var(--font-jetbrains-mono), monospace',
-                    color: '#FF6B6B',
-                    background: 'rgba(255,107,107,0.08)',
-                  }}
-                >
-                  {p.tag}
+                <span className="flex flex-wrap gap-[6px] justify-self-start">
+                  {p.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="text-[11px] border border-[rgba(255,107,107,0.25)] px-[10px] py-1 rounded-full"
+                      style={{
+                        fontFamily: 'var(--font-jetbrains-mono), monospace',
+                        color: '#FF6B6B',
+                        background: 'rgba(255,107,107,0.08)',
+                      }}
+                    >
+                      {t}
+                    </span>
+                  ))}
                 </span>
                 <span
                   className="text-[11.5px]"

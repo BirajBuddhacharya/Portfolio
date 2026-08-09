@@ -8,6 +8,7 @@ const ALL_TAGS = [
   'Node.js', 'GraphQL', 'REST API', 'MongoDB', 'Redis',
   'Computer Vision', 'Data Engineering', 'DevOps', 'CI/CD',
   'Open Source', 'Tutorial', 'Opinion', 'Case Study',
+  'ML', 'Backend', 'Frontend', 'Data', 'Career',
 ];
 
 type Data = { tags: string[] };

@@ -55,7 +55,7 @@ export function BlogPreviewSection() {
               transition={{ duration: 0.5, delay: i * 0.08, ease: [0.2, 0.8, 0.2, 1] }}
             >
               <Link
-                href="/blog"
+                href={`/blog/${p.id}`}
                 className="grid items-center gap-6 py-[22px] px-3 border-b border-white/[0.08] transition-colors duration-200"
                 style={{
                   gridTemplateColumns: '110px 1fr auto',

@@ -3,15 +3,19 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   FolderKanban,
   FileText,
   User,
-  ScrollText,
+  Briefcase,
+  GraduationCap,
+  Wrench,
   PenLine,
   Mail,
   Settings,
+  LogOut,
   Plus,
   Search,
   X,
@@ -27,16 +31,16 @@ import {
   useAdminPosts,
   useAdminAbout,
   useAdminResume,
-  useResumePool,
 } from '../../services/adminService';
+import { useAboutEducation } from '../../services/aboutService';
+import { useAdminLogout } from '../../services/authService';
+import { api } from '../../lib/apiClient';
 import { placeholder } from '../../data/placeholder';
 
 // ─── types ───────────────────────────────────────────────────────────────────
-type Tab = 'dashboard' | 'projects' | 'posts' | 'about' | 'resume' | 'editor' | 'inbox' | 'settings';
+type Tab = 'dashboard' | 'projects' | 'posts' | 'about' | 'experience' | 'education-certs' | 'skills' | 'editor' | 'inbox' | 'settings';
 type InboxMsg = (typeof placeholder.admin.inbox)[number];
-type PoolEntry = { id: string; title: string; period: string; organization: string; body: string };
 type ResumeRow = { title: string; period: string; organization: string; body: string };
-type CertRow = { title: string; meta: string; body: string };
 type SkillRow = { title: string; body: string };
 
 // ─── design tokens ────────────────────────────────────────────────────────────
@@ -59,7 +63,9 @@ const navItems: { id: Tab; label: string; icon: LucideIcon }[] = [
   { id: 'projects', label: 'Projects', icon: FolderKanban },
   { id: 'posts', label: 'Posts', icon: FileText },
   { id: 'about', label: 'About', icon: User },
-  { id: 'resume', label: 'Resume', icon: ScrollText },
+  { id: 'experience', label: 'Experience', icon: Briefcase },
+  { id: 'education-certs', label: 'Education & Certs', icon: GraduationCap },
+  { id: 'skills', label: 'Skills', icon: Wrench },
   { id: 'editor', label: 'Editor', icon: PenLine },
   { id: 'inbox', label: 'Inbox', icon: Mail },
   { id: 'settings', label: 'Settings', icon: Settings },
@@ -95,142 +101,6 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-// ─── Search-select ────────────────────────────────────────────────────────────
-function SearchSelect({
-  pool,
-  selectedIds,
-  onAdd,
-  placeholder: ph,
-}: {
-  pool: PoolEntry[];
-  selectedIds: string[];
-  onAdd: (id: string) => void;
-  placeholder: string;
-}) {
-  const [query, setQuery] = useState('');
-  const [open, setOpen] = useState(false);
-
-  const available = pool.filter(
-    (e) =>
-      !selectedIds.includes(e.id) &&
-      (query === '' ||
-        e.title.toLowerCase().includes(query.toLowerCase()) ||
-        e.organization.toLowerCase().includes(query.toLowerCase())),
-  );
-
-  return (
-    <div className="relative">
-      <input
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onFocus={(e) => {
-          setOpen(true);
-          (e.currentTarget as HTMLElement).style.borderColor = `${ACCENT}55`;
-        }}
-        onBlur={(e) => {
-          setTimeout(() => setOpen(false), 150);
-          (e.currentTarget as HTMLElement).style.borderColor = BORDER;
-        }}
-        placeholder={ph}
-        className="w-full rounded-[10px] border px-4 py-[10px] text-[13.5px] transition-colors duration-150"
-        style={{ background: '#131317', borderColor: BORDER, color: TEXT, outline: 'none' }}
-      />
-      {open && available.length > 0 && (
-        <div
-          className="absolute top-full left-0 right-0 mt-1 rounded-[12px] border overflow-hidden z-20 max-h-[240px] overflow-y-auto"
-          style={{ background: '#131317', borderColor: BORDER }}
-        >
-          {available.map((entry, idx) => (
-            <button
-              key={entry.id}
-              onMouseDown={() => { onAdd(entry.id); setQuery(''); }}
-              className="w-full text-left px-4 py-[10px] flex flex-col gap-[2px] cursor-pointer transition-colors duration-100"
-              style={{ borderBottom: idx < available.length - 1 ? `1px solid ${BORDER}` : 'none' }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)'; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
-            >
-              <span className="text-[13.5px]" style={{ color: TEXT }}>{entry.title}</span>
-              <span className="text-[11px]" style={{ fontFamily: mono, color: MUTED }}>
-                {entry.organization} · {entry.period}
-              </span>
-            </button>
-          ))}
-        </div>
-      )}
-      {open && available.length === 0 && query.length > 0 && (
-        <div
-          className="absolute top-full left-0 right-0 mt-1 rounded-[12px] border px-4 py-3 text-[12px]"
-          style={{ background: '#131317', borderColor: BORDER, fontFamily: mono, color: MUTED }}
-        >
-          No matches
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ─── Resume-style card (non-editable, matches public resume row layout) ────────
-function ResumeCard({ entry, onRemove }: { entry: PoolEntry; onRemove: () => void }) {
-  return (
-    <div className="rounded-[14px] border p-5 relative" style={{ background: CARD, borderColor: BORDER }}>
-      <button
-        onClick={onRemove}
-        title="Remove"
-        className="absolute top-3 right-3 w-[22px] h-[22px] flex items-center justify-center rounded-full text-[15px] leading-none cursor-pointer transition-colors duration-150"
-        style={{ color: MUTED, background: 'rgba(255,255,255,0.05)' }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#EF4444'; }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = MUTED; }}
-      >
-        ×
-      </button>
-      <div className="flex items-start justify-between gap-4 pr-7 flex-wrap">
-        <div
-          className="text-[17px] font-semibold"
-          style={{ fontFamily: heading, letterSpacing: '-0.02em', color: TEXT }}
-        >
-          {entry.title}
-        </div>
-        <div className="text-[11.5px] shrink-0" style={{ fontFamily: mono, color: MUTED }}>
-          {entry.organization} · {entry.period}
-        </div>
-      </div>
-      <div className="text-[13.5px] leading-[1.7] mt-2" style={{ color: '#8A8A93' }}>
-        {entry.body}
-      </div>
-    </div>
-  );
-}
-
-// ─── About-style education card (non-editable, matches public about edu card) ──
-function AboutEduCard({ entry, onRemove }: { entry: PoolEntry; onRemove: () => void }) {
-  return (
-    <div className="relative p-6 rounded-[16px] border border-white/[0.08]" style={{ background: '#0C0C0F' }}>
-      <button
-        onClick={onRemove}
-        title="Remove"
-        className="absolute top-3 right-3 w-[22px] h-[22px] flex items-center justify-center rounded-full text-[15px] leading-none cursor-pointer transition-colors duration-150"
-        style={{ color: MUTED, background: 'rgba(255,255,255,0.05)' }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#EF4444'; }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = MUTED; }}
-      >
-        ×
-      </button>
-      <div className="text-[11.5px] mb-3 pr-6" style={{ fontFamily: mono, color: ACCENT }}>
-        {entry.period}
-      </div>
-      <div
-        className="text-[18px] font-semibold mb-[6px]"
-        style={{ fontFamily: heading, letterSpacing: '-0.02em', color: TEXT }}
-      >
-        {entry.title}
-      </div>
-      <div className="text-[14px] leading-[1.6]" style={{ color: '#8A8A93' }}>
-        {entry.organization}
-      </div>
-    </div>
-  );
-}
-
 // ─── Tag search combobox ─────────────────────────────────────────────────────
 function TagSearch({
   selectedTags,
@@ -249,9 +119,10 @@ function TagSearch({
   useEffect(() => {
     if (!open) return;
     setLoading(true);
-    fetch('/api/tags')
-      .then((r) => r.json())
-      .then((d: { tags: string[] }) => { setAllTags(d.tags); setLoading(false); })
+    // local Next route, so bypass the backend baseURL
+    api
+      .get<{ tags: string[] }>('/api/tags', { baseURL: '' })
+      .then(({ data }) => { setAllTags(data.tags); setLoading(false); })
       .catch(() => setLoading(false));
   }, [open]);
 
@@ -652,7 +523,7 @@ function PostsTab() {
         <table className="w-full">
           <thead>
             <tr style={{ borderBottom: `1px solid ${BORDER}`, background: 'rgba(255,255,255,0.02)' }}>
-              {['Title', 'Tag', 'Date', 'Status', 'Actions'].map((h) => (
+              {['Title', 'Tags', 'Date', 'Status', 'Actions'].map((h) => (
                 <th
                   key={h}
                   className="px-5 py-3 text-left text-[10.5px] uppercase tracking-[0.12em]"
@@ -673,12 +544,17 @@ function PostsTab() {
               >
                 <td className="px-5 py-[14px] text-[13px] max-w-[360px]" style={{ color: TEXT }}>{p.title}</td>
                 <td className="px-5 py-[14px]">
-                  <span
-                    className="text-[10.5px] px-[9px] py-[3px] rounded-full border"
-                    style={{ fontFamily: mono, color: TEXT2, borderColor: BORDER, background: 'rgba(255,255,255,0.04)' }}
-                  >
-                    {p.tag}
-                  </span>
+                  <div className="flex flex-wrap gap-[5px]">
+                    {p.tags.map((t) => (
+                      <span
+                        key={t}
+                        className="text-[10.5px] px-[9px] py-[3px] rounded-full border"
+                        style={{ fontFamily: mono, color: TEXT2, borderColor: BORDER, background: 'rgba(255,255,255,0.04)' }}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
                 </td>
                 <td className="px-5 py-[14px] text-[12px]" style={{ fontFamily: mono, color: MUTED }}>{p.date}</td>
                 <td className="px-5 py-[14px]"><StatusBadge status={p.status} /></td>
@@ -700,6 +576,7 @@ function PostsTab() {
 // ─── Editor tab ───────────────────────────────────────────────────────────────
 function EditorTab() {
   const [title, setTitle] = useState('');
+  const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
@@ -724,6 +601,16 @@ function EditorTab() {
           placeholder="Post title..."
           className="w-full rounded-[12px] border px-5 py-3 text-[20px] font-semibold outline-none transition-colors duration-150 placeholder:text-[#3F3F46]"
           style={{ ...inputStyle, fontFamily: heading, letterSpacing: '-0.02em' }}
+          onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${ACCENT}55`; }}
+          onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = BORDER; }}
+        />
+        <textarea
+          value={excerpt}
+          onChange={(e) => setExcerpt(e.target.value)}
+          rows={2}
+          placeholder="Excerpt — the summary shown on the blog list..."
+          className="w-full rounded-[12px] border px-5 py-3 text-[14px] leading-relaxed outline-none resize-none transition-colors duration-150 placeholder:text-[#3F3F46]"
+          style={inputStyle}
           onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${ACCENT}55`; }}
           onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = BORDER; }}
         />
@@ -949,7 +836,7 @@ function AboutTab() {
   const [paragraphs, setParagraphs] = useState<string[]>(about?.paragraphs ?? []);
   const [facts, setFacts] = useState<typeof placeholder.about.facts>(about?.facts ?? []);
 
-  const educationEntries = placeholder.about.education;
+  const { data: educationEntries = [] } = useAboutEducation();
 
   const inputStyle = { background: '#131317', borderColor: BORDER, color: TEXT, outline: 'none' };
 
@@ -1135,13 +1022,143 @@ function AboutTab() {
   );
 }
 
-// ─── Resume tab ───────────────────────────────────────────────────────────────
-function ResumeTab() {
-  const { data: resumeAdmin } = useAdminResume();
+// ─── Shared resume row editor ─────────────────────────────────────────────────
+function ResumeRowEditor<T extends ResumeRow>({
+  rows,
+  setRows,
+  addLabel,
+}: {
+  rows: T[];
+  setRows: React.Dispatch<React.SetStateAction<T[]>>;
+  addLabel: string;
+}) {
+  const inputStyle = { background: '#131317', borderColor: BORDER, color: TEXT, outline: 'none' };
+  const focusStyle = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (e.currentTarget as HTMLElement).style.borderColor = `${ACCENT}55`;
+  };
+  const blurStyle = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (e.currentTarget as HTMLElement).style.borderColor = BORDER;
+  };
+  return (
+    <>
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={() => setRows((prev) => [...prev, { title: '', period: '', organization: '', body: '' } as T])}
+          className="text-[11px] px-3 py-[5px] rounded-[8px] border cursor-pointer transition-colors duration-150"
+          style={{ fontFamily: mono, color: ACCENT, borderColor: `${ACCENT}44`, background: `${ACCENT}10` }}
+        >
+          {addLabel}
+        </button>
+      </div>
+      <div className="flex flex-col gap-4">
+        {rows.map((row, i) => (
+          <div
+            key={i}
+            className="rounded-[14px] border p-4 flex flex-col gap-3"
+            style={{ background: CARD, borderColor: BORDER }}
+          >
+            <div className="flex items-center justify-between">
+              <div className="text-[11px]" style={{ fontFamily: mono, color: MUTED }}>entry {i + 1}</div>
+              <button
+                onClick={() => setRows((prev) => prev.filter((_, j) => j !== i))}
+                className="text-[10.5px] px-3 py-[4px] rounded-[7px] border cursor-pointer transition-colors duration-150"
+                style={{ fontFamily: mono, color: '#EF4444', borderColor: '#EF444430', background: '#EF444410' }}
+              >
+                remove
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {(['title', 'organization'] as const).map((field) => (
+                <div key={field}>
+                  <label className="block text-[10.5px] mb-1" style={{ fontFamily: mono, color: MUTED }}>{field}</label>
+                  <input
+                    value={row[field]}
+                    onChange={(e) => setRows((prev) => prev.map((r, j) => j === i ? { ...r, [field]: e.target.value } : r))}
+                    className="w-full rounded-[9px] border px-3 py-[8px] text-[13px] transition-colors duration-150"
+                    style={inputStyle}
+                    onFocus={focusStyle}
+                    onBlur={blurStyle}
+                  />
+                </div>
+              ))}
+            </div>
+            <div>
+              <label className="block text-[10.5px] mb-1" style={{ fontFamily: mono, color: MUTED }}>period</label>
+              <input
+                value={row.period}
+                onChange={(e) => setRows((prev) => prev.map((r, j) => j === i ? { ...r, period: e.target.value } : r))}
+                placeholder="e.g. 2023 — present"
+                className="w-full rounded-[9px] border px-3 py-[8px] text-[13px] transition-colors duration-150"
+                style={inputStyle}
+                onFocus={focusStyle}
+                onBlur={blurStyle}
+              />
+            </div>
+            <div>
+              <label className="block text-[10.5px] mb-1" style={{ fontFamily: mono, color: MUTED }}>body</label>
+              <textarea
+                value={row.body}
+                onChange={(e) => setRows((prev) => prev.map((r, j) => j === i ? { ...r, body: e.target.value } : r))}
+                rows={2}
+                className="w-full rounded-[9px] border px-3 py-[8px] text-[13px] leading-relaxed resize-none transition-colors duration-150"
+                style={inputStyle}
+                onFocus={focusStyle}
+                onBlur={blurStyle}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
 
+// ─── Experience tab ───────────────────────────────────────────────────────────
+function ExperienceTab() {
+  const { data: resumeAdmin } = useAdminResume();
   const [experiences, setExperiences] = useState<ResumeRow[]>(resumeAdmin?.experiences ?? []);
-  const [educationEntries, setEducationEntries] = useState<ResumeRow[]>(resumeAdmin?.educationEntries ?? []);
-  const [certs, setCerts] = useState<CertRow[]>(resumeAdmin?.certifications ?? []);
+  return (
+    <div className="max-w-[860px] flex flex-col gap-6">
+      <SectionLabel>experience</SectionLabel>
+      <ResumeRowEditor rows={experiences} setRows={setExperiences} addLabel="+ add experience" />
+      <button
+        className="self-start text-[13px] font-medium px-6 py-[10px] rounded-[12px] cursor-pointer transition-opacity duration-150 hover:opacity-90"
+        style={{ fontFamily: mono, color: '#111', background: ACCENT }}
+      >
+        Save changes
+      </button>
+    </div>
+  );
+}
+
+// ─── Education & Certs tab ────────────────────────────────────────────────────
+function EducationCertsTab() {
+  const { data: resumeAdmin } = useAdminResume();
+  const [educationEntries, setEducationEntries] = useState<ResumeRow[]>(resumeAdmin?.education ?? []);
+  const [certs, setCerts] = useState<ResumeRow[]>(resumeAdmin?.certifications ?? []);
+  return (
+    <div className="max-w-[860px] flex flex-col gap-10">
+      <div>
+        <SectionLabel>education</SectionLabel>
+        <ResumeRowEditor rows={educationEntries} setRows={setEducationEntries} addLabel="+ add education" />
+      </div>
+      <div>
+        <SectionLabel>certifications</SectionLabel>
+        <ResumeRowEditor rows={certs} setRows={setCerts} addLabel="+ add certification" />
+      </div>
+      <button
+        className="self-start text-[13px] font-medium px-6 py-[10px] rounded-[12px] cursor-pointer transition-opacity duration-150 hover:opacity-90"
+        style={{ fontFamily: mono, color: '#111', background: ACCENT }}
+      >
+        Save changes
+      </button>
+    </div>
+  );
+}
+
+// ─── Skills tab ───────────────────────────────────────────────────────────────
+function SkillsTab() {
+  const { data: resumeAdmin } = useAdminResume();
   const [skills, setSkills] = useState<SkillRow[]>(resumeAdmin?.skills ?? []);
 
   const inputStyle = { background: '#131317', borderColor: BORDER, color: TEXT, outline: 'none' };
@@ -1152,230 +1169,67 @@ function ResumeTab() {
     (e.currentTarget as HTMLElement).style.borderColor = BORDER;
   };
 
-  function ResumeRowEditor<T extends ResumeRow>({
-    rows,
-    setRows,
-    addLabel,
-  }: {
-    rows: T[];
-    setRows: React.Dispatch<React.SetStateAction<T[]>>;
-    addLabel: string;
-  }) {
-    return (
-      <>
-        <div className="flex justify-end mb-4">
-          <button
-            onClick={() => setRows((prev) => [...prev, { title: '', period: '', organization: '', body: '' } as T])}
-            className="text-[11px] px-3 py-[5px] rounded-[8px] border cursor-pointer transition-colors duration-150"
-            style={{ fontFamily: mono, color: ACCENT, borderColor: `${ACCENT}44`, background: `${ACCENT}10` }}
-          >
-            {addLabel}
-          </button>
-        </div>
-        <div className="flex flex-col gap-4">
-          {rows.map((row, i) => (
-            <div
-              key={i}
-              className="rounded-[14px] border p-4 flex flex-col gap-3"
-              style={{ background: CARD, borderColor: BORDER }}
-            >
-              <div className="flex items-center justify-between">
-                <div className="text-[11px]" style={{ fontFamily: mono, color: MUTED }}>entry {i + 1}</div>
-                <button
-                  onClick={() => setRows((prev) => prev.filter((_, j) => j !== i))}
-                  className="text-[10.5px] px-3 py-[4px] rounded-[7px] border cursor-pointer transition-colors duration-150"
-                  style={{ fontFamily: mono, color: '#EF4444', borderColor: '#EF444430', background: '#EF444410' }}
-                >
-                  remove
-                </button>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                {(['title', 'organization'] as const).map((field) => (
-                  <div key={field}>
-                    <label className="block text-[10.5px] mb-1" style={{ fontFamily: mono, color: MUTED }}>{field}</label>
-                    <input
-                      value={row[field]}
-                      onChange={(e) => setRows((prev) => prev.map((r, j) => j === i ? { ...r, [field]: e.target.value } : r))}
-                      className="w-full rounded-[9px] border px-3 py-[8px] text-[13px] transition-colors duration-150"
-                      style={inputStyle}
-                      onFocus={focusStyle}
-                      onBlur={blurStyle}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div>
-                <label className="block text-[10.5px] mb-1" style={{ fontFamily: mono, color: MUTED }}>period</label>
-                <input
-                  value={row.period}
-                  onChange={(e) => setRows((prev) => prev.map((r, j) => j === i ? { ...r, period: e.target.value } : r))}
-                  placeholder="e.g. 2023 — present"
-                  className="w-full rounded-[9px] border px-3 py-[8px] text-[13px] transition-colors duration-150"
-                  style={inputStyle}
-                  onFocus={focusStyle}
-                  onBlur={blurStyle}
-                />
-              </div>
-              <div>
-                <label className="block text-[10.5px] mb-1" style={{ fontFamily: mono, color: MUTED }}>body</label>
-                <textarea
-                  value={row.body}
-                  onChange={(e) => setRows((prev) => prev.map((r, j) => j === i ? { ...r, body: e.target.value } : r))}
-                  rows={2}
-                  className="w-full rounded-[9px] border px-3 py-[8px] text-[13px] leading-relaxed resize-none transition-colors duration-150"
-                  style={inputStyle}
-                  onFocus={focusStyle}
-                  onBlur={blurStyle}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </>
-    );
-  }
-
   return (
-    <div className="max-w-[860px] flex flex-col gap-10">
-
-      {/* ── Experience ── */}
-      <div>
-        <SectionLabel>experience</SectionLabel>
-        <ResumeRowEditor rows={experiences} setRows={setExperiences} addLabel="+ add experience" />
+    <div className="max-w-[860px] flex flex-col gap-6">
+      <div className="flex items-center justify-between">
+        <SectionLabel>skills</SectionLabel>
+        <button
+          onClick={() => setSkills((prev) => [...prev, { title: '', body: '' }])}
+          className="text-[11px] px-3 py-[5px] rounded-[8px] border cursor-pointer transition-colors duration-150"
+          style={{ fontFamily: mono, color: ACCENT, borderColor: `${ACCENT}44`, background: `${ACCENT}10` }}
+        >
+          + add category
+        </button>
       </div>
-
-      {/* ── Education ── */}
-      <div>
-        <SectionLabel>education</SectionLabel>
-        <ResumeRowEditor rows={educationEntries} setRows={setEducationEntries} addLabel="+ add education" />
-      </div>
-
-      {/* ── Certifications ── */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <SectionLabel>certifications</SectionLabel>
-          <button
-            onClick={() => setCerts((prev) => [...prev, { title: '', meta: '', body: '' }])}
-            className="text-[11px] px-3 py-[5px] rounded-[8px] border cursor-pointer transition-colors duration-150"
-            style={{ fontFamily: mono, color: ACCENT, borderColor: `${ACCENT}44`, background: `${ACCENT}10` }}
+      <div className="flex flex-col gap-4">
+        {skills.map((skill, i) => (
+          <div
+            key={i}
+            className="rounded-[14px] border p-4 flex flex-col gap-3"
+            style={{ background: CARD, borderColor: BORDER }}
           >
-            + add
-          </button>
-        </div>
-        <div className="flex flex-col gap-4">
-          {certs.map((cert, i) => (
-            <div
-              key={i}
-              className="rounded-[14px] border p-4 flex flex-col gap-3"
-              style={{ background: CARD, borderColor: BORDER }}
-            >
-              <div className="flex items-center justify-between">
-                <div className="text-[11px]" style={{ fontFamily: mono, color: MUTED }}>entry {i + 1}</div>
-                <button
-                  onClick={() => setCerts((prev) => prev.filter((_, j) => j !== i))}
-                  className="text-[10.5px] px-3 py-[4px] rounded-[7px] border cursor-pointer transition-colors duration-150"
-                  style={{ fontFamily: mono, color: '#EF4444', borderColor: '#EF444430', background: '#EF444410' }}
-                >
-                  remove
-                </button>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                {(['title', 'meta'] as const).map((field) => (
-                  <div key={field}>
-                    <label className="block text-[10.5px] mb-1" style={{ fontFamily: mono, color: MUTED }}>{field}</label>
-                    <input
-                      value={cert[field]}
-                      onChange={(e) => setCerts((prev) => prev.map((r, j) => j === i ? { ...r, [field]: e.target.value } : r))}
-                      className="w-full rounded-[9px] border px-3 py-[8px] text-[13px] transition-colors duration-150"
-                      style={inputStyle}
-                      onFocus={focusStyle}
-                      onBlur={blurStyle}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div>
-                <label className="block text-[10.5px] mb-1" style={{ fontFamily: mono, color: MUTED }}>body</label>
-                <textarea
-                  value={cert.body}
-                  onChange={(e) => setCerts((prev) => prev.map((r, j) => j === i ? { ...r, body: e.target.value } : r))}
-                  rows={2}
-                  className="w-full rounded-[9px] border px-3 py-[8px] text-[13px] leading-relaxed resize-none transition-colors duration-150"
-                  style={inputStyle}
-                  onFocus={focusStyle}
-                  onBlur={blurStyle}
-                />
-              </div>
+            <div className="flex items-center justify-between">
+              <div className="text-[11px]" style={{ fontFamily: mono, color: MUTED }}>category {i + 1}</div>
+              <button
+                onClick={() => setSkills((prev) => prev.filter((_, j) => j !== i))}
+                className="text-[10.5px] px-3 py-[4px] rounded-[7px] border cursor-pointer transition-colors duration-150"
+                style={{ fontFamily: mono, color: '#EF4444', borderColor: '#EF444430', background: '#EF444410' }}
+              >
+                remove
+              </button>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── Skills ── */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <SectionLabel>skills</SectionLabel>
-          <button
-            onClick={() => setSkills((prev) => [...prev, { title: '', body: '' }])}
-            className="text-[11px] px-3 py-[5px] rounded-[8px] border cursor-pointer transition-colors duration-150"
-            style={{ fontFamily: mono, color: ACCENT, borderColor: `${ACCENT}44`, background: `${ACCENT}10` }}
-          >
-            + add category
-          </button>
-        </div>
-        <div className="flex flex-col gap-4">
-          {skills.map((skill, i) => (
-            <div
-              key={i}
-              className="rounded-[14px] border p-4 flex flex-col gap-3"
-              style={{ background: CARD, borderColor: BORDER }}
-            >
-              <div className="flex items-center justify-between">
-                <div className="text-[11px]" style={{ fontFamily: mono, color: MUTED }}>category {i + 1}</div>
-                <button
-                  onClick={() => setSkills((prev) => prev.filter((_, j) => j !== i))}
-                  className="text-[10.5px] px-3 py-[4px] rounded-[7px] border cursor-pointer transition-colors duration-150"
-                  style={{ fontFamily: mono, color: '#EF4444', borderColor: '#EF444430', background: '#EF444410' }}
-                >
-                  remove
-                </button>
-              </div>
-              <div>
-                <label className="block text-[10.5px] mb-1" style={{ fontFamily: mono, color: MUTED }}>category name</label>
-                <input
-                  value={skill.title}
-                  onChange={(e) => setSkills((prev) => prev.map((r, j) => j === i ? { ...r, title: e.target.value } : r))}
-                  className="w-full rounded-[9px] border px-3 py-[8px] text-[13px] transition-colors duration-150"
-                  style={inputStyle}
-                  onFocus={focusStyle}
-                  onBlur={blurStyle}
-                />
-              </div>
-              <div>
-                <label className="block text-[10.5px] mb-1" style={{ fontFamily: mono, color: MUTED }}>items (comma-separated)</label>
-                <textarea
-                  value={skill.body}
-                  onChange={(e) => setSkills((prev) => prev.map((r, j) => j === i ? { ...r, body: e.target.value } : r))}
-                  rows={2}
-                  className="w-full rounded-[9px] border px-3 py-[8px] text-[13px] leading-relaxed resize-none transition-colors duration-150"
-                  style={inputStyle}
-                  onFocus={focusStyle}
-                  onBlur={blurStyle}
-                />
-              </div>
+            <div>
+              <label className="block text-[10.5px] mb-1" style={{ fontFamily: mono, color: MUTED }}>category name</label>
+              <input
+                value={skill.title}
+                onChange={(e) => setSkills((prev) => prev.map((r, j) => j === i ? { ...r, title: e.target.value } : r))}
+                className="w-full rounded-[9px] border px-3 py-[8px] text-[13px] transition-colors duration-150"
+                style={inputStyle}
+                onFocus={focusStyle}
+                onBlur={blurStyle}
+              />
             </div>
-          ))}
-        </div>
+            <div>
+              <label className="block text-[10.5px] mb-1" style={{ fontFamily: mono, color: MUTED }}>items (comma-separated)</label>
+              <textarea
+                value={skill.body}
+                onChange={(e) => setSkills((prev) => prev.map((r, j) => j === i ? { ...r, body: e.target.value } : r))}
+                rows={2}
+                className="w-full rounded-[9px] border px-3 py-[8px] text-[13px] leading-relaxed resize-none transition-colors duration-150"
+                style={inputStyle}
+                onFocus={focusStyle}
+                onBlur={blurStyle}
+              />
+            </div>
+          </div>
+        ))}
       </div>
-
-      {/* ── Save ── */}
       <button
         className="self-start text-[13px] font-medium px-6 py-[10px] rounded-[12px] cursor-pointer transition-opacity duration-150 hover:opacity-90"
         style={{ fontFamily: mono, color: '#111', background: ACCENT }}
       >
         Save changes
       </button>
-
     </div>
   );
 }
@@ -1474,6 +1328,8 @@ function SettingsTab() {
 
 // ─── Main page ────────────────────────────────────────────────────────────────
 export default function AdminPage() {
+  const router = useRouter();
+  const logout = useAdminLogout();
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const unread = placeholder.admin.inbox.filter((m) => !m.read).length;
 
@@ -1482,7 +1338,9 @@ export default function AdminPage() {
     projects: <ProjectsTab />,
     posts: <PostsTab />,
     about: <AboutTab />,
-    resume: <ResumeTab />,
+    experience: <ExperienceTab />,
+    'education-certs': <EducationCertsTab />,
+    skills: <SkillsTab />,
     editor: <EditorTab />,
     inbox: <InboxTab />,
     settings: <SettingsTab />,
@@ -1571,6 +1429,20 @@ export default function AdminPage() {
           >
             ← back to site
           </Link>
+          <button
+            onClick={() => {
+              logout();
+              router.replace('/admin/login');
+              router.refresh();
+            }}
+            className="flex items-center gap-2 px-3 py-[8px] rounded-[10px] text-[12px] w-full text-left cursor-pointer transition-colors duration-150"
+            style={{ fontFamily: mono, color: MUTED, background: 'transparent' }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#EF4444'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = MUTED; }}
+          >
+            <LogOut size={13} strokeWidth={1.7} />
+            sign out
+          </button>
         </div>
       </aside>
 

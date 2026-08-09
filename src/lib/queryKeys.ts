@@ -1,4 +1,5 @@
 export enum QueryKeys {
+  AUTH_ME = "auth_me",
   HOME_STATS = "home_stats",
   HOME_FEATURED_PROJECTS = "home_featured_projects",
   HOME_EXPERIENCE = "home_experience",
@@ -6,6 +7,7 @@ export enum QueryKeys {
   HOME_BLOG_PREVIEW = "home_blog_preview",
   HOME_TICKER = "home_ticker",
   ABOUT = "about",
+  ABOUT_PROFILE = "about_profile",
   ABOUT_EDUCATION = "about_education",
   ABOUT_FACTS = "about_facts",
   PROJECTS_LIST = "projects_list",
@@ -24,5 +26,4 @@ export enum QueryKeys {
   ADMIN_POSTS = "admin_posts",
   ADMIN_ABOUT = "admin_about",
   ADMIN_RESUME = "admin_resume",
-  RESUME_POOL = "resume_pool",
 }
